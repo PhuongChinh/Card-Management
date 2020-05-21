@@ -15,6 +15,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import {MatToolbarModule, MatToolbarRow } from '@angular/material/toolbar';
+
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatButtonModule,
     MatButtonModule,
     MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatToolbarModule    
   ],
   providers: [],
   bootstrap: [AppComponent]
