@@ -8,7 +8,7 @@ import {UserManagementComponent} from './comp/business/user-management/user-mana
 const routes: Routes = [
   { path: 'cis/login', component: LoginComponent },
   { path: 'cis/customer-management', component: CustomerManagementComponent },
-  { path: 'cis/order-management', component: OrderManagementComponent },
+  { path: 'cis/order-management/:customerId', component: OrderManagementComponent },
   { path: 'cis/user-management', component: UserManagementComponent },
   { path: '', redirectTo: 'cis/login', pathMatch: 'full' },
 ];

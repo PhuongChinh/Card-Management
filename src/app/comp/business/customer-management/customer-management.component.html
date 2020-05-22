@@ -124,44 +124,43 @@
                                         <div class="table-data__tool-left">
                                         </div>
                                         <div class="table-data__tool-right">
-                                            <button class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                            <button class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal" data-target="#mediumModal">
                                                 <i class="zmdi zmdi-plus"></i>Thêm khách hàng</button>
                                         </div>
                                     </div>
                                     <table class="table table-data2" style="width: 100%;">
                                         <thead>
                                             <tr style="text-align: center;">
-                                                <th class="col-md-2">Tên</th>
-                                                <th class="col-md-2">Email</th>
-                                                <th class="col-md-2">Số điện thoại</th>
-                                                <th class="col-md-3">Ghi chú</th>
-                                                <th class="col-md-1">Đơn hàng</th>
-                                                <th class="col-md-1"></th>
+                                                <th class="col-md-2" style="width: 15%;">Tên</th>
+                                                <th class="col-md-2" style="width: 15%;">Email</th>
+                                                <th class="col-md-2" style="width: 15%;">Số điện thoại</th>
+                                                <th class="col-md-3" style="width: 25%;">Ghi chú</th>
+                                                <th class="col-md-1" style="width: 15%;">Đơn hàng</th>
+                                                <th class="col-md-1" style="width: 15%;"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class="tr-shadow" style="text-align: center;">
-                                                <td>Lori Lynch</td>
+                                            <tr class="tr-shadow" style="text-align: center;" *ngFor="let cus of lstCustomer">
+                                                <td>{{cus.customerName}}</td>
                                                 <td>
-                                                    <span class="block-email">lori@example.com</span>
+                                                    <span class="block-email">{{cus.email}}</span>
                                                 </td>
-                                                <td class="desc">093 493 3943</td>
-                                                <td></td>
+                                                <td class="desc">{{cus.phone}}</td>
+                                                <td>{{cus.note}}</td>
                                                 <td>
-                                                    <span class="status--process"><a [routerLink]="['/']" routerLinkActive="router-link-active" >Xem đơn hàng</a></span>
+                                                    <span class="role member"><a href="javascript:void(0)" (click)="viewOrder(cus.customerName, cus.id)"  style="color: white;">Xem đơn hàng</a></span>
                                                 </td>
                                                 <td>
                                                     <div class="table-data-feature">
                                                         <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </button>
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" (click)="deleteCustomer(cus.id)">
                                                             <i class="zmdi zmdi-delete"></i>
                                                         </button>
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr class="spacer"></tr> 
                                         </tbody>
                                     </table>
                                 </div>
@@ -182,7 +181,48 @@
         </div>
 
     </div>
-
+    <div class="modal fade" id="mediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="mediumModalLabel" style="font-weight: bold;">Thêm khách hàng</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form  [formGroup]="formCustomer" (ngSubmit)="createOrUpdateCustomer()">
+                        <div class="form-group">
+                            <label for="cc-payment" class="control-label mb-1">Tên khách hàng</label>
+                            <input id="cc-pament" type="text" class="form-control" formControlName="name" >
+                        </div>
+                        <div class="form-group has-success">
+                            <label for="cc-name" class="control-label mb-1">Ghi chú</label>
+                            <input id="cc-name"  type="text" class="form-control cc-name valid" formControlName="note">
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label for="cc-exp" class="control-label mb-1">Email</label>
+                                    <input id="cc-exp" type="text" class="form-control cc-exp"formControlName="email">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <label for="x_card_code" class="control-label mb-1">Số điện thoại</label>
+                                <div class="input-group">
+                                    <input id="x_card_code"  type="tel" class="form-control cc-cvc" formControlName="phone">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" type="submit" (click)="createOrUpdateCustomer()">Thêm</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

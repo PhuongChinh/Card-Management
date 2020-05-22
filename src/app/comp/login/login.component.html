@@ -23,19 +23,20 @@
                             </a>
                         </div>
                         <div class="login-form">
-                            <form action="" method="post">
+                            <form  [formGroup]="loginForm" (ngSubmit)="login()">
                                 <div class="form-group">
                                     <label>Username</label>
                                     <br>
-                                    <input class="au-input au-input--full" type="text" name="username" placeholder="Username">
+                                    <input formControlName="userName" class="au-input au-input--full" type="text" name="username" placeholder="Username">
                                 </div>
                                 <br>
                                 <div class="form-group">
                                     <label>Password</label>
                                     <br>
-                                    <input class="au-input au-input--full" type="password" name="password" placeholder="Password">
+                                    <input formControlName="password" class="au-input au-input--full" type="password" name="password" placeholder="Password">
                                 </div>
                                 <br>
+                                <span style="margin-bottom: 20px; color: red;">{{message}}</span>
                                 <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Đăng nhập</button>
                             </form>
                         </div>
