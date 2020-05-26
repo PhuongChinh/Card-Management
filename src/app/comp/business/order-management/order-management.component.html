@@ -112,6 +112,7 @@
 
             <!-- MAIN CONTENT-->
             <div class="main-content">
+                <div><ngx-spinner></ngx-spinner></div>
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                        
@@ -132,32 +133,32 @@
                                         <thead>
                                             <tr style="text-align: center;">
                                                 <th class="col-md-2" style="width: 15%;">Đơn hàng</th>
+                                                <th class="col-md-2" style="width: 15%;">Ghi chú</th>
                                                 <th class="col-md-2" style="width: 10%;">Số lượng</th>
                                                 <th class="col-md-2" style="width: 10%;">Giá</th>
-                                                <th class="col-md-3" style="width: 45%;">Tiến độ</th>
-                                                <th class="col-md-1" style="width: 10%;">Xem chi tiết</th>
+                                                <th class="col-md-3" style="width: 30%;">Tiến độ</th>
+                                                <th class="col-md-1" style="width: 10%;">Chi tiết</th>
                                                 <th class="col-md-1" style="width: 10%;"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr class="tr-shadow" style="text-align: center;" *ngFor="let order of lstOrder">
                                                 <td>{{order.orderName}}</td>
+                                                <td>{{order.note}}</td>
                                                 <td>
                                                     <span class="block-email">{{order.quantity}}</span>
                                                 </td>
-                                                <td>{{order.price | number}}</td>
+                                                <td>{{order.price | number}} VNĐ</td>
                                                 <td class="desc">
                                                     <div class="row">
-                                                        <span style="color: red; width: 50%;">Chưa làm ({{order.phases.phaseOne}})</span>
-                                                        <span style="color: rgb(6, 119, 134);width: 50%;">Cắt ({{order.phases.phaseTwo}})</span>
+                                                        <span style="color: red; width: 33%;">Chưa làm ({{order.phases.phaseOne}})</span>
+                                                        <span style="color: rgb(6, 119, 134);width: 33%;">Cắt ({{order.phases.phaseTwo}})</span>
+                                                        <span style="color: rgb(158, 118, 9);width: 33%;">Chi tiết ({{order.phases.phaseThree}})</span>
                                                     </div>
                                                     <div class="row">
-                                                        <span style="color: rgb(158, 118, 9);width: 50%;">Chi tiết ({{order.phases.phaseThree}})</span>
-                                                        <span style="color: rgb(80, 117, 5);width: 50%;">Chà hàng ({{order.phases.phaseFour}})</span>
-                                                    </div>
-                                                    <div class="row">
-                                                        <span style="color: green;width: 50%;">Kiểm xuất ({{order.phases.phaseFive}})</span>
-                                                        <span style="color: rgb(3, 71, 26);width: 50%;">Hoàn thiện ({{order.phases.phaseCompleted}})</span>
+                                                        <span style="color: rgb(80, 117, 5);width: 33%;">Chà hàng ({{order.phases.phaseFour}})</span>
+                                                        <span style="color: green;width: 33%">Kiểm xuất ({{order.phases.phaseFive}})</span>
+                                                        <span style="color: rgb(3, 71, 26);width: 33%;">Hoàn thiện ({{order.phases.phaseCompleted}})</span>
                                                     </div>
                                                 </td>
                                                 

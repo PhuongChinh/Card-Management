@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router'
 import { HttpConnectorService } from '../../../service/http-connector.service/http-connector.service.component'
 import { CONSUME_API } from '../../../service/services/consume-apis';
 import { FormGroup, Validators, FormControl } from "@angular/forms";
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-order-management',
@@ -14,6 +15,7 @@ export class OrderManagementComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private spinner: NgxSpinnerService,
     private xhr: HttpConnectorService
   ) { }
 
@@ -39,6 +41,7 @@ export class OrderManagementComponent implements OnInit {
   }
 
   getOrderByCustomerId(){
+    this.spinner.show();
     let url = CONSUME_API.ORDER.GET_ORDER_BY_CUSTOMER_ID;
     let param = {
       'customerId': this.customerId
@@ -47,12 +50,14 @@ export class OrderManagementComponent implements OnInit {
     this.xhr.get(url).subscribe((res: any) => {
       if (res) {
         this.lstOrder = res.result;
+        this.spinner.hide();
       }
     }, (err) => {
 
     });
   }
   createOrder() {
+    this.spinner.show();
     let url = CONSUME_API.ORDER.CREATE_ORDER;
     let body = {
       'orderId':'',
@@ -66,6 +71,7 @@ export class OrderManagementComponent implements OnInit {
     this.xhr.post(url,body).subscribe((res: any) => {
       if (res) {
         this.lstOrder = res.result;
+        this.spinner.hide();
       }
     }, (err) => {
 

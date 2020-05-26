@@ -4,6 +4,8 @@ import {Router} from '@angular/router'
 import { HttpConnectorService } from '../../../service/http-connector.service/http-connector.service.component'
 import { CONSUME_API } from '../../../service/services/consume-apis';
 import { FormGroup, Validators, FormControl } from "@angular/forms";
+import { NgxSpinnerService } from "ngx-spinner";
+
 //import { ToastrService } from 'ngx-toastr';
 import {STATUS_RESP} from '../../../constants'
 @Component({
@@ -17,6 +19,7 @@ export class CustomerManagementComponent implements OnInit {
     private title: Title,
     private xhr: HttpConnectorService,
     //private toarst: ToastrService,
+    private spinner: NgxSpinnerService,
     private router: Router
   ) {
     this.title.setTitle("Quản lí khách hàng");
@@ -39,10 +42,12 @@ export class CustomerManagementComponent implements OnInit {
     })
   }
   getAllCustomer(){
+    this.spinner.show();
     let url = CONSUME_API.CUSTOMER.CUSTOMERS;
     this.xhr.get(url).subscribe((res: any) => {
       if (res) {
         this.lstCustomer = res._embedded.customers;
+        this.spinner.hide();
       }
     }, (err) => {
 
@@ -50,6 +55,7 @@ export class CustomerManagementComponent implements OnInit {
   }
 
   createOrUpdateCustomer(){
+    this.spinner.show();
     let url = CONSUME_API.CUSTOMER.CUSTOMERS;
     let body = {
       'customerName': this.formCustomer.value.name,
@@ -60,6 +66,7 @@ export class CustomerManagementComponent implements OnInit {
     this.xhr.post(url, body).subscribe((res: any) => {
       if (res) {
         this.getAllCustomer();
+        this.spinner.hide();
       }
     }, (err) => {
 
