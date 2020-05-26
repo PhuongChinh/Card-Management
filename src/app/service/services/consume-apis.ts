@@ -1,6 +1,6 @@
 export class CONSUME_API {
 
-    static apiUrl: string = window['apiUrl'] || ('http://' + 'localhost:8080/api');  
+    static apiUrl: string = window['apiUrl'] || ('http://' + '18.223.0.116:8080/api');  
     static USERS: any = {
         LOGIN: '/v1/userCtrl/login',
     }
