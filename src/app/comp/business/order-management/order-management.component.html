@@ -140,24 +140,24 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class="tr-shadow" style="text-align: center;">
-                                                <td>Thiệp hoa</td>
+                                            <tr class="tr-shadow" style="text-align: center;" *ngFor="let order of lstOrder">
+                                                <td>{{order.orderName}}</td>
                                                 <td>
-                                                    <span class="block-email">200</span>
+                                                    <span class="block-email">{{order.quantity}}</span>
                                                 </td>
-                                                <td>300.000</td>
+                                                <td>{{order.price | number}}</td>
                                                 <td class="desc">
                                                     <div class="row">
-                                                        <span style="color: red; width: 50%;">Chưa làm (10)</span>
-                                                        <span style="color: rgb(6, 119, 134);width: 50%;">Cắt (10)</span>
+                                                        <span style="color: red; width: 50%;">Chưa làm ({{order.phases.phaseOne}})</span>
+                                                        <span style="color: rgb(6, 119, 134);width: 50%;">Cắt ({{order.phases.phaseTwo}})</span>
                                                     </div>
                                                     <div class="row">
-                                                        <span style="color: rgb(158, 118, 9);width: 50%;">Chi tiết (10)</span>
-                                                        <span style="color: rgb(80, 117, 5);width: 50%;">Chà hàng (10)</span>
+                                                        <span style="color: rgb(158, 118, 9);width: 50%;">Chi tiết ({{order.phases.phaseThree}})</span>
+                                                        <span style="color: rgb(80, 117, 5);width: 50%;">Chà hàng ({{order.phases.phaseFour}})</span>
                                                     </div>
                                                     <div class="row">
-                                                        <span style="color: green;width: 50%;">Kiểm xuất (10)</span>
-                                                        <span style="color: rgb(3, 71, 26);width: 50%;">Hoàn thiện (10)</span>
+                                                        <span style="color: green;width: 50%;">Kiểm xuất ({{order.phases.phaseFive}})</span>
+                                                        <span style="color: rgb(3, 71, 26);width: 50%;">Hoàn thiện ({{order.phases.phaseCompleted}})</span>
                                                     </div>
                                                 </td>
                                                 
@@ -205,30 +205,30 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form [formGroup]="formCreateOrder">
                         <div class="form-group">
                             <label for="cc-payment" class="control-label mb-1">Tên đơn hàng</label>
-                            <input id="cc-pament" type="text" class="form-control">
+                            <input id="cc-pament" type="text" class="form-control" formControlName = "name">
                         </div>
                         <div class="form-group has-success">
                             <label for="cc-name" class="control-label mb-1">Mô tả</label>
-                            <input id="cc-name"  type="text" class="form-control cc-name valid">
+                            <input id="cc-name"  type="text" class="form-control cc-name valid" formControlName = "desc">
                         </div>
                         <div class="form-group has-success">
                             <label for="cc-name" class="control-label mb-1">Ghi chú</label>
-                            <input id="cc-name"  type="text" class="form-control cc-name valid">
+                            <input id="cc-name"  type="text" class="form-control cc-name valid" formControlName = "note">
                         </div>
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
                                     <label for="cc-exp" class="control-label mb-1">Số lượng</label>
-                                    <input id="cc-exp" type="text" class="form-control cc-exp">
+                                    <input id="cc-exp" type="number" class="form-control cc-exp" formControlName = "quantity">
                                 </div>
                             </div>
                             <div class="col-6">
                                 <label for="x_card_code" class="control-label mb-1">Giá</label>
                                 <div class="input-group">
-                                    <input id="x_card_code"  type="tel" class="form-control cc-cvc">
+                                    <input id="x_card_code"  type="number" class="form-control cc-cvc" formControlName = "price">
                                 </div>
                             </div>
                         </div>
@@ -236,7 +236,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" type="submit">Thêm</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" type="submit" (click)="createOrder()">Thêm</button>
                 </div>
             </div>
         </div>
