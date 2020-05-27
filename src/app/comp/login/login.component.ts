@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
     this.xhr.get(url).subscribe((res: any) => {
       if (res) {
         if (res.message === STATUS_RESP.STATUS_OK) {
-          //this.saveSession(res.result.fullName, res.result.role, res.result.id);
+          this.saveSession(res.result.fullName, res.result.role, res.result.id);
           this.router.navigate(['/cis/customer-management']);
         } else {
           this.message = "Thông tin đăng nhập chưa đúng!!!"

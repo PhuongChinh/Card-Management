@@ -28,7 +28,7 @@ export class UserManagementComponent implements OnInit {
 
   newUserRole: string = role.WORKER;
   selectOption(event: any) {
-    console.log(event);
+    this.newUserRole = event;
   }
 
   lstUser: any = [];
@@ -50,6 +50,7 @@ export class UserManagementComponent implements OnInit {
       'userName': this.formCreateNewUser.value.userName,
       'fullName': this.formCreateNewUser.value.name,
       'password': this.formCreateNewUser.value.password,
+      'phone': this.formCreateNewUser.value.phone,
       'role': this.newUserRole,
       'status': false
     }

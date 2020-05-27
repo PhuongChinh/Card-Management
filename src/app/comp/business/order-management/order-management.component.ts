@@ -21,11 +21,16 @@ export class OrderManagementComponent implements OnInit {
 
   customerName: string;
   customerId: string;
+  currentUserId: string;
+  isSeeProcess: boolean = false;
   ngOnInit(): void {
     this.customerName = sessionStorage.getItem("customerName");
     this.customerId = this.route.snapshot.paramMap.get("customerId");
+    this.getOrderByCustomerId(this.customerId);
     this.setupForm();
-    this.getOrderByCustomerId();
+    this.setUpFormAssign();
+    this.getAllUser();
+    this.currentUserId = sessionStorage.getItem("userId");
   }
 
   lstOrder: any = [];
@@ -40,11 +45,11 @@ export class OrderManagementComponent implements OnInit {
     })
   }
 
-  getOrderByCustomerId(){
+  getOrderByCustomerId(customerId: any){
     this.spinner.show();
     let url = CONSUME_API.ORDER.GET_ORDER_BY_CUSTOMER_ID;
     let param = {
-      'customerId': this.customerId
+      'customerId': customerId
     }
     url += "?" + this.xhr.buildBodyParam(param);
     this.xhr.get(url).subscribe((res: any) => {
@@ -71,10 +76,114 @@ export class OrderManagementComponent implements OnInit {
     this.xhr.post(url,body).subscribe((res: any) => {
       if (res) {
         this.lstOrder = res.result;
+        this.formCreateOrder.reset();
         this.spinner.hide();
       }
     }, (err) => {
 
+    });
+  }
+
+  lstUser: any = [];
+  lstMaxNumber: any = [];
+  workerId: string = "";
+  getAllUser(){
+    this.spinner.show();
+    let url = CONSUME_API.USERS.USERS;
+    this.xhr.get(url).subscribe((res: any) => {
+      if (res) {
+        this.lstUser = res._embedded.users;
+        this.spinner.hide();
+      }
+    }, (err) => {
+
+    });
+  }
+
+  selectOptionUser(evt: any){
+    this.workerId = evt;
+  }
+
+  formAssign: FormGroup;
+  setUpFormAssign(){
+    this.formAssign = new FormGroup({
+      quantity: new FormControl('', [])
+    })
+  }
+
+  phase: string;
+  setPhase(phase: string){
+    this.phase = phase;
+  }
+  assignJob() {
+    this.spinner.show();
+    let url = CONSUME_API.ORDER.ASSIGN_JOB;
+    let body = {
+      'orderId': this.orderDetailId,
+      'quantity': this.formAssign.value.quantity,
+      'createdId': this.currentUserId,
+      'workerId': this.workerId,
+      'phase': this.phase
+
+    }
+    this.xhr.post(url,body).subscribe((res: any) => {
+      if (res) {
+        this.formAssign.reset();
+        this.getPhaseWorkerOfOrder(this.orderDetailId);
+        this.spinner.hide();
+      }
+    }, (err) => {
+
+    });
+  }
+
+  orderDetailId: string;
+  orderDetail: any;
+  seeProgess(order: any){
+    this.isSeeProcess = true;
+    this.orderDetailId = order.id;
+    this.orderDetail = order;
+    this.getPhaseWorkerOfOrder(this.orderDetailId);
+  }
+
+
+  progessDetail: any;
+  getPhaseWorkerOfOrder(orderId: string){
+    this.spinner.show();
+    let url = CONSUME_API.ORDER.PHASE_WORKER_OF_ORDER;
+    let param = {
+      'orderId': orderId
+    }
+    url += "?" + this.xhr.buildBodyParam(param);
+    this.xhr.get(url).subscribe((res: any) => {
+      if (res) {
+        console.log(res);
+        this.progessDetail = res.result;
+        this.getOrderByCustomerId(this.customerId);
+        this.spinner.hide();
+      }
+    }, (err) => {
+      alert("Xảy ra lỗi, vui lòng F5 lại trang!")
+    });
+  }
+
+  // Xác nhận làm xong việc
+  confirmCompletedJob(phaseWorkerId: string){
+    this.spinner.show();
+    let url = CONSUME_API.ORDER.CONFIRM_COMPLETED_JOB;
+    let param = {
+      'orderId': this.orderDetailId,
+      'phaseWorkerId': phaseWorkerId
+    }
+    url += "?" + this.xhr.buildBodyParam(param);
+    this.xhr.get(url).subscribe((res: any) => {
+      if (res) {
+        console.log(res);
+        this.getPhaseWorkerOfOrder(this.orderDetailId);
+        this.spinner.hide();
+      }
+    }, (err) => {
+      alert("Xảy ra lỗi, vui lòng F5 lại trang!")
     });
   }
 
