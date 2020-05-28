@@ -30,7 +30,7 @@ export class OrderManagementComponent implements OnInit {
     this.titleService.setTitle("Quản lí đơn hàng");
     this.checkIfAdmin();
     this.customerId = this.route.snapshot.paramMap.get("customerId");
-    if (this.customerId === "all"){
+    if (this.customerId === "all") {
       this.getAllOrder();
       this.isSeeAllOrder = true;
     } else {
@@ -45,7 +45,7 @@ export class OrderManagementComponent implements OnInit {
   }
 
   lstOrder: any = [];
-  formCreateOrder : FormGroup;
+  formCreateOrder: FormGroup;
   setupForm() {
     this.formCreateOrder = new FormGroup({
       name: new FormControl('', []),
@@ -56,7 +56,7 @@ export class OrderManagementComponent implements OnInit {
     })
   }
 
-  getOrderByCustomerId(customerId: any){
+  getOrderByCustomerId(customerId: any) {
     this.spinner.show();
     let url = CONSUME_API.ORDER.GET_ORDER_BY_CUSTOMER_ID;
     let param = {
@@ -73,7 +73,7 @@ export class OrderManagementComponent implements OnInit {
     });
   }
 
-  getAllOrder(){
+  getAllOrder() {
     this.spinner.show();
     let url = CONSUME_API.ORDER.GET_ALL_ORDER;
     this.xhr.get(url).subscribe((res: any) => {
@@ -90,7 +90,7 @@ export class OrderManagementComponent implements OnInit {
     this.spinner.show();
     let url = CONSUME_API.ORDER.CREATE_ORDER;
     let body = {
-      'orderId':'',
+      'orderId': '',
       'orderName': this.formCreateOrder.value.name,
       'orderDesc': this.formCreateOrder.value.desc,
       'orderNote': this.formCreateOrder.value.note,
@@ -98,7 +98,7 @@ export class OrderManagementComponent implements OnInit {
       'orderPrice': +this.formCreateOrder.value.price,
       'customerId': this.customerId
     }
-    this.xhr.post(url,body).subscribe((res: any) => {
+    this.xhr.post(url, body).subscribe((res: any) => {
       if (res) {
         this.lstOrder = res.result;
         this.formCreateOrder.reset();
@@ -112,7 +112,7 @@ export class OrderManagementComponent implements OnInit {
   lstUser: any = [];
   lstMaxNumber: any = [];
   workerId: string = "";
-  getAllUser(){
+  getAllUser() {
     this.spinner.show();
     let url = CONSUME_API.USERS.USERS;
     this.xhr.get(url).subscribe((res: any) => {
@@ -125,46 +125,52 @@ export class OrderManagementComponent implements OnInit {
     });
   }
 
-  selectOptionUser(evt: any){
+  selectOptionUser(evt: any) {
     this.workerId = evt;
   }
 
   formAssign: FormGroup;
-  setUpFormAssign(){
+  setUpFormAssign() {
     this.formAssign = new FormGroup({
       quantity: new FormControl('', [])
     })
   }
 
   phase: string;
-  setPhase(phase: string){
+  maxCard: number;
+  setPhase(phase: string, notDo: number) {
     this.phase = phase;
+    this.maxCard = notDo;
   }
   assignJob() {
-    this.spinner.show();
-    let url = CONSUME_API.ORDER.ASSIGN_JOB;
-    let body = {
-      'orderId': this.orderDetailId,
-      'quantity': this.formAssign.value.quantity,
-      'createdId': this.currentUserId,
-      'workerId': this.workerId,
-      'phase': this.phase
+    if (this.formAssign.value.quantity > this.maxCard) {
+      alert("Số lượng thiệp được giao lớn hơn số lượng còn lại của bước này!!!")
+    } else {
+      this.spinner.show();
+      let url = CONSUME_API.ORDER.ASSIGN_JOB;
+      let body = {
+        'orderId': this.orderDetailId,
+        'quantity': this.formAssign.value.quantity,
+        'createdId': this.currentUserId,
+        'workerId': this.workerId,
+        'phase': this.phase
 
-    }
-    this.xhr.post(url,body).subscribe((res: any) => {
-      if (res) {
-        this.formAssign.reset();
-        this.getPhaseWorkerOfOrder(this.orderDetailId);
-        this.spinner.hide();
       }
-    }, (err) => {
+      this.xhr.post(url, body).subscribe((res: any) => {
+        if (res) {
+          this.formAssign.reset();
+          this.getPhaseWorkerOfOrder(this.orderDetailId);
+          this.spinner.hide();
+        }
+      }, (err) => {
 
-    });
+      });
+    }
   }
 
   orderDetailId: string;
   orderDetail: any;
-  seeProgess(order: any){
+  seeProgess(order: any) {
     this.isSeeProcess = true;
     this.orderDetailId = order.id;
     this.orderDetail = order;
@@ -173,7 +179,7 @@ export class OrderManagementComponent implements OnInit {
 
 
   progessDetail: any;
-  getPhaseWorkerOfOrder(orderId: string){
+  getPhaseWorkerOfOrder(orderId: string) {
     this.spinner.show();
     let url = CONSUME_API.ORDER.PHASE_WORKER_OF_ORDER;
     let param = {
@@ -184,7 +190,7 @@ export class OrderManagementComponent implements OnInit {
       if (res) {
         console.log(res);
         this.progessDetail = res.result;
-        if (this.isSeeAllOrder){
+        if (this.isSeeAllOrder) {
           this.getAllOrder();
         } else {
           this.getOrderByCustomerId(this.customerId);
@@ -197,7 +203,7 @@ export class OrderManagementComponent implements OnInit {
   }
 
   // Xác nhận làm xong việc
-  confirmCompletedJob(phaseWorkerId: string){
+  confirmCompletedJob(phaseWorkerId: string) {
     this.spinner.show();
     let url = CONSUME_API.ORDER.CONFIRM_COMPLETED_JOB;
     let param = {
@@ -215,9 +221,9 @@ export class OrderManagementComponent implements OnInit {
       alert("Xảy ra lỗi, vui lòng F5 lại trang!")
     });
   }
-  checkIfAdmin(){
+  checkIfAdmin() {
     let role = sessionStorage.getItem("role");
-    if (role === "WORKER" || role === null){
+    if (role === "WORKER" || role === null) {
       sessionStorage.clear();
       this.router.navigate(['/cis/login']);
     }

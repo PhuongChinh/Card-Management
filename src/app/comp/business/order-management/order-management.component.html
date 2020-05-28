@@ -215,7 +215,7 @@
                     </div>
                     <br>
                     <div class="table-responsive" style="border: 1px solid #d3d3d3; border-radius: 10px;">
-                        <h3 class="title-3 m-b-30" style="border-bottom: 1px solid #d3d3d3;text-align: center;"><b>Cắt - <span style="color: red;">Chưa phân công: {{progessDetail.twoNotDo}} thiệp</span></b>-----<a href="" data-toggle="modal" data-target="#assignModal" (click)="setPhase('Phase_two')" >Thêm người làm</a></h3>
+                        <h3 class="title-3 m-b-30" style="border-bottom: 1px solid #d3d3d3;text-align: center;"><b>Cắt - <span style="color: red;">Chưa phân công: {{progessDetail.twoNotDo}} thiệp</span></b>-----<a href="" data-toggle="modal" data-target="#assignModal" (click)="setPhase('Phase_two',progessDetail.notDo)" >Thêm người làm</a></h3>
                         <table class="table table-top-campaign">
                             <tbody>
                                 <tr *ngFor="let workerPhase of progessDetail.phaseTwo">
@@ -232,7 +232,7 @@
                     </div>
                    <br><br>
                     <div class="table-responsive" style="border: 1px solid #d3d3d3; border-radius: 10px;">
-                        <h3 class="title-3 m-b-30" style="border-bottom: 1px solid #d3d3d3;text-align: center;"><b>Chi tiết - <span style="color: red;">Chưa phân công: {{progessDetail.threeNotDo}} thiệp</span></b>-----<a href="" data-toggle="modal" data-target="#assignModal" (click)="setPhase('Phase_three')">Thêm người làm</a></h3>
+                        <h3 class="title-3 m-b-30" style="border-bottom: 1px solid #d3d3d3;text-align: center;"><b>Chi tiết - <span style="color: red;">Chưa phân công: {{progessDetail.threeNotDo}} thiệp</span></b>-----<a href="" data-toggle="modal" data-target="#assignModal" (click)="setPhase('Phase_three', progessDetail.threeNotDo)">Thêm người làm</a></h3>
                         <table class="table table-top-campaign">
                             <tbody>
                                 <tr *ngFor="let workerPhase of progessDetail.phaseThree">
@@ -249,7 +249,7 @@
                     </div>
                     <br><br>
                     <div class="table-responsive" style="border: 1px solid #d3d3d3; border-radius: 10px;">
-                        <h3 class="title-3 m-b-30" style="border-bottom: 1px solid #d3d3d3;text-align: center;"><b>Chà hàng - <span style="color: red;">Chưa phân công: {{progessDetail.fourNotDo}} thiệp</span></b>-----<a href="" data-toggle="modal" data-target="#assignModal" (click)="setPhase('Phase_four')">Thêm người làm</a></h3>
+                        <h3 class="title-3 m-b-30" style="border-bottom: 1px solid #d3d3d3;text-align: center;"><b>Chà hàng - <span style="color: red;">Chưa phân công: {{progessDetail.fourNotDo}} thiệp</span></b>-----<a href="" data-toggle="modal" data-target="#assignModal" (click)="setPhase('Phase_four',progessDetail.fourNotDo)">Thêm người làm</a></h3>
                         <table class="table table-top-campaign">
                             <tbody>
                                 <tr *ngFor="let workerPhase of progessDetail.phaseFour">
@@ -266,7 +266,7 @@
                     </div>
                     <br><br>
                     <div class="table-responsive" style="border: 1px solid #d3d3d3; border-radius: 10px;">
-                        <h3 class="title-3 m-b-30" style="border-bottom: 1px solid #d3d3d3;text-align: center;"><b>Kiểm xuất - <span style="color: red;">Chưa phân công: {{progessDetail.fiveNotDo}} thiệp</span></b>-----<a href="" data-toggle="modal" data-target="#assignModal" (click)="setPhase('Phase_five')">Thêm người làm</a></h3>
+                        <h3 class="title-3 m-b-30" style="border-bottom: 1px solid #d3d3d3;text-align: center;"><b>Kiểm xuất - <span style="color: red;">Chưa phân công: {{progessDetail.fiveNotDo}} thiệp</span></b>-----<a href="" data-toggle="modal" data-target="#assignModal" (click)="setPhase('Phase_five',progessDetail.fiveNotDo)">Thêm người làm</a></h3>
                         <table class="table table-top-campaign">
                             <tbody>
                                 <tr *ngFor="let workerPhase of progessDetail.phaseFive">
@@ -315,7 +315,7 @@
                         </div>
                         <div class="col-6">
                             <label for="cc-exp" class="control-label mb-1">Số lượng</label>
-                            <input id="x_card_code"  type="number" class="form-control cc-cvc" formControlName="quantity">
+                            <input id="x_card_code" min = "min" max = "max" type="number" class="form-control cc-cvc" formControlName="quantity">
                         </div>
                     </div>
                 </form>
