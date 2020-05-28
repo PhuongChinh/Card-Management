@@ -89,7 +89,7 @@ export class CustomerManagementComponent implements OnInit {
   }
   checkIfAdmin(){
     let role = sessionStorage.getItem("role");
-    if (role === "WORKER"){
+    if (role === "WORKER" || role === null){
       sessionStorage.clear();
       this.router.navigate(['/cis/login']);
     }
