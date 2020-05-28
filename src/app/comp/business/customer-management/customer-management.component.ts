@@ -26,6 +26,7 @@ export class CustomerManagementComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    this.checkIfAdmin();
     this.getAllCustomer();
     this.setupForm();
   }
@@ -85,5 +86,12 @@ export class CustomerManagementComponent implements OnInit {
   viewOrder(name: string, id: string){
    sessionStorage.setItem("customerName",name);
    this.router.navigate(['/cis/order-management', id]);
+  }
+  checkIfAdmin(){
+    let role = sessionStorage.getItem("role");
+    if (role === "WORKER"){
+      sessionStorage.clear();
+      this.router.navigate(['/cis/login']);
+    }
   }
 }

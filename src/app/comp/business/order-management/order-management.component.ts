@@ -14,19 +14,30 @@ import { NgxSpinnerService } from "ngx-spinner";
 export class OrderManagementComponent implements OnInit {
 
   constructor(
+    private titleService: Title,
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService,
-    private xhr: HttpConnectorService
+    private xhr: HttpConnectorService,
+    private router: Router
   ) { }
 
   customerName: string;
   customerId: string;
   currentUserId: string;
   isSeeProcess: boolean = false;
+  isSeeAllOrder: boolean = false;
   ngOnInit(): void {
-    this.customerName = sessionStorage.getItem("customerName");
+    this.titleService.setTitle("Quản lí đơn hàng");
+    this.checkIfAdmin();
     this.customerId = this.route.snapshot.paramMap.get("customerId");
-    this.getOrderByCustomerId(this.customerId);
+    if (this.customerId === "all"){
+      this.getAllOrder();
+      this.isSeeAllOrder = true;
+    } else {
+      this.isSeeAllOrder = false;
+      this.customerName = sessionStorage.getItem("customerName");
+      this.getOrderByCustomerId(this.customerId);
+    }
     this.setupForm();
     this.setUpFormAssign();
     this.getAllUser();
@@ -61,6 +72,20 @@ export class OrderManagementComponent implements OnInit {
 
     });
   }
+
+  getAllOrder(){
+    this.spinner.show();
+    let url = CONSUME_API.ORDER.GET_ALL_ORDER;
+    this.xhr.get(url).subscribe((res: any) => {
+      if (res) {
+        this.lstOrder = res.result;
+        this.spinner.hide();
+      }
+    }, (err) => {
+
+    });
+  }
+
   createOrder() {
     this.spinner.show();
     let url = CONSUME_API.ORDER.CREATE_ORDER;
@@ -159,7 +184,11 @@ export class OrderManagementComponent implements OnInit {
       if (res) {
         console.log(res);
         this.progessDetail = res.result;
-        this.getOrderByCustomerId(this.customerId);
+        if (this.isSeeAllOrder){
+          this.getAllOrder();
+        } else {
+          this.getOrderByCustomerId(this.customerId);
+        }
         this.spinner.hide();
       }
     }, (err) => {
@@ -185,6 +214,13 @@ export class OrderManagementComponent implements OnInit {
     }, (err) => {
       alert("Xảy ra lỗi, vui lòng F5 lại trang!")
     });
+  }
+  checkIfAdmin(){
+    let role = sessionStorage.getItem("role");
+    if (role === "WORKER"){
+      sessionStorage.clear();
+      this.router.navigate(['/cis/login']);
+    }
   }
 
 }

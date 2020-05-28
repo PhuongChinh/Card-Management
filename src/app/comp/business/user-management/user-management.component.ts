@@ -5,6 +5,7 @@ import { FormGroup, Validators, FormControl } from "@angular/forms";
 import { CONSUME_API } from 'src/app/service/services/consume-apis';
 import { HttpConnectorService } from '../../../service/http-connector.service/http-connector.service.component'
 import { NgxSpinnerService } from "ngx-spinner";
+import {Router} from '@angular/router'
 
 @Component({
   selector: 'app-user-management',
@@ -16,12 +17,14 @@ export class UserManagementComponent implements OnInit {
   constructor(
     private titleService: Title,
     private xhr: HttpConnectorService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private router: Router
   ) {
     this.titleService.setTitle("Quản lí nhân viên");
   }
 
   ngOnInit(): void {
+    this.checkIfAdmin();
     this.setUpForm();
     this.getAllUser();
   }
@@ -76,5 +79,17 @@ export class UserManagementComponent implements OnInit {
     }, (err) => {
 
     });
+  }
+
+  seeWorkingDetail(userId: string) {
+    this.router.navigate(['/cis/each-user-working-management/',userId]);
+  }
+
+  checkIfAdmin(){
+    let role = sessionStorage.getItem("role");
+    if (role === "WORKER"){
+      sessionStorage.clear();
+      this.router.navigate(['/cis/login']);
+    }
   }
 }

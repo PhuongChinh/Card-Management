@@ -46,7 +46,11 @@ export class LoginComponent implements OnInit {
       if (res) {
         if (res.message === STATUS_RESP.STATUS_OK) {
           this.saveSession(res.result.fullName, res.result.role, res.result.id);
-          this.router.navigate(['/cis/customer-management']);
+          if (res.result.role === "ADMIN") {
+            this.router.navigate(['/cis/customer-management']);
+          } else {
+            this.router.navigate(['/cis/each-user-working-management/',res.result.id]);
+          }
         } else {
           this.message = "Thông tin đăng nhập chưa đúng!!!"
         }

@@ -17,6 +17,8 @@ import { MatButtonModule } from '@angular/material/button';
 import {MatToolbarModule, MatToolbarRow } from '@angular/material/toolbar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { EachUserWorkingManagementComponent } from './comp/business/each-user-working-management/each-user-working-management.component';
+import { HeaderWebComponent } from './comp/business/header-web/header-web.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
     CustomerManagementComponent,
     OrderManagementComponent,
     UserManagementComponent,
+    EachUserWorkingManagementComponent,
+    HeaderWebComponent,
   ],
   imports: [
     BrowserModule,
