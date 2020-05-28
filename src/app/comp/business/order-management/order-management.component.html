@@ -16,6 +16,7 @@
 
 <body class="animsition">
     <div class="page-wrapper">
+        <app-mobile-header></app-mobile-header>
         <!-- END HEADER MOBILE-->
 
         <!-- MENU SIDEBAR-->
@@ -77,38 +78,49 @@
                                             <tr style="text-align: center;">
                                                 <th class="col-md-2" style="width: 10%;">Đơn hàng</th>
                                                 <th class="col-md-2" style="width: 15%;">Ghi chú</th>
-                                                <th class="col-md-2" style="width: 10%;">Số lượng</th>
+                                                <th class="col-md-2" style="width: 5%;">Số lượng</th>
                                                 <th class="col-md-2" style="width: 10%;">Giá</th>
-                                                <th class="col-md-3" style="width: 40%;">Tiến độ</th>
-                                                <th class="col-md-1" style="width: 5%;">Detail</th>
-                                                <th class="col-md-1" style="width: 10%;"></th>
+                                                <th class="col-md-3" style="width: 7%;">Chưa làm</th>
+                                                <th class="col-md-3" style="width: 7%;">Cắt</th>
+                                                <th class="col-md-3" style="width: 7%;">Chi tiết</th>
+                                                <th class="col-md-3" style="width: 7%;">Chà hàng</th>
+                                                <th class="col-md-3" style="width: 7%;">Kiểm xuất</th>
+                                                <th class="col-md-3" style="width: 7%;">Hoàn thiện</th>
+                                                <th class="col-md-1" style="width: 9%;">Detail</th>
+                                                <th class="col-md-1" style="width: 9%;"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr class="tr-shadow" style="text-align: center;" *ngFor="let order of lstOrder">
-                                                <td>{{order.orderName}}</td>
-                                                <td>{{order.note}}</td>
-                                                <td>
+                                                <td style="width: 10%;">{{order.orderName}}</td>
+                                                <td style="width: 15%;">{{order.note}}</td>
+                                                <td style="width: 5%;">
                                                     <span class="block-email">{{order.quantity}}</span>
                                                 </td>
-                                                <td>{{order.price | number}} VNĐ</td>
-                                                <td class="desc">
-                                                    <div class="row">
-                                                        <span style="color: red; width: 33%;">Chưa làm ({{order.phases.phaseOne}})</span>
-                                                        <span style="color: rgb(6, 119, 134);width: 33%;">Cắt ({{order.phases.phaseTwo}})</span>
-                                                        <span style="color: rgb(158, 118, 9);width: 33%;">Chi tiết ({{order.phases.phaseThree}})</span>
-                                                    </div>
-                                                    <div class="row">
-                                                        <span style="color: rgb(80, 117, 5);width: 33%;">Chà hàng ({{order.phases.phaseFour}})</span>
-                                                        <span style="color: green;width: 33%">Kiểm xuất ({{order.phases.phaseFive}})</span>
-                                                        <span style="color: rgb(3, 71, 26);width: 33%;">Hoàn thiện ({{order.phases.phaseCompleted}})</span>
-                                                    </div>
-                                                </td>
+                                                <td style="width: 10%;">{{order.price | number}} VNĐ</td>
                                                 
-                                                <td>
+                                                
+                                                <td style="width: 7%;">
+                                                    <span style="color: red;">{{order.phases.phaseOne}}</span>
+                                                </td>
+                                                <td style="width: 7%;">
+                                                    <span style="color: rgb(6, 119, 134);">{{order.phases.phaseTwo}}</span>
+                                                </td>
+                                                <td style="width: 7%;">
+                                                    <span style="color: rgb(158, 118, 9);">{{order.phases.phaseThree}}</span>                                                </td>
+                                                <td style="width: 7%;">
+                                                    <span style="color: rgb(80, 117, 5);">{{order.phases.phaseFour}}</span>
+                                                </td>
+                                                <td style="width: 7%;">
+                                                    <span style="color: green;">{{order.phases.phaseFive}}</span>                                                </td>
+                                                <td style="width: 7%;">
+                                                    <span style="color: rgb(3, 71, 26);">{{order.phases.phaseCompleted}}</span>
+                                                </td>
+
+                                                <td style="width: 9%;">
                                                     <span class="status--process"><a [routerLink]="['/']" routerLinkActive="router-link-active"data-toggle="modal" data-target="#assignWorker" (click)="seeProgess(order)">Detail</a></span>
                                                 </td>
-                                                <td>
+                                                <td style="width: 9%;">
                                                     <div class="table-data-feature">
                                                         <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>

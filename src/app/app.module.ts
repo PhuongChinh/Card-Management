@@ -19,6 +19,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { EachUserWorkingManagementComponent } from './comp/business/each-user-working-management/each-user-working-management.component';
 import { HeaderWebComponent } from './comp/business/header-web/header-web.component';
+import { MobileHeaderComponent } from './comp/business/mobile-header/mobile-header.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { HeaderWebComponent } from './comp/business/header-web/header-web.compon
     UserManagementComponent,
     EachUserWorkingManagementComponent,
     HeaderWebComponent,
+    MobileHeaderComponent,
   ],
   imports: [
     BrowserModule,
