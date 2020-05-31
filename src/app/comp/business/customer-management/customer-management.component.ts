@@ -39,7 +39,8 @@ export class CustomerManagementComponent implements OnInit {
       name: new FormControl('', []),
       note: new FormControl('', []),
       email: new FormControl('', []),
-      phone: new FormControl('', [])
+      phone: new FormControl('', []),
+      address: new FormControl('', [])
     })
   }
   getAllCustomer(){
@@ -63,6 +64,10 @@ export class CustomerManagementComponent implements OnInit {
       'note': this.formCustomer.value.note,
       'phone': this.formCustomer.value.phone,
       'email': this.formCustomer.value.email,
+      'customerAddress': this.formCustomer.value.address,
+      'isOrder': false,
+      'isRequiredDesign': false,
+      'orderListQuantity': 0
     }
     this.xhr.post(url, body).subscribe((res: any) => {
       if (res) {
@@ -74,8 +79,12 @@ export class CustomerManagementComponent implements OnInit {
     });
   }
 
-  deleteCustomer(id: string){
-    let url = CONSUME_API.CUSTOMER.CUSTOMERS + "/" + id;
+  editCustomerId: string;
+  setCustomer(id: string){
+    this.editCustomerId = id;
+  }
+  deleteCustomer(){
+    let url = CONSUME_API.CUSTOMER.CUSTOMERS + "/" + this.editCustomerId;
     this.xhr.delete(url).subscribe((res: any) => {
         this.getAllCustomer();
     }, (err) => {
@@ -85,7 +94,7 @@ export class CustomerManagementComponent implements OnInit {
 
   viewOrder(name: string, id: string){
    sessionStorage.setItem("customerName",name);
-   this.router.navigate(['/cis/order-management', id]);
+   this.router.navigate(['/cis/order-list-management', id]);
   }
   checkIfAdmin(){
     let role = sessionStorage.getItem("role");
@@ -93,5 +102,8 @@ export class CustomerManagementComponent implements OnInit {
       sessionStorage.clear();
       this.router.navigate(['/cis/login']);
     }
+  }
+  editCustomer(){
+    alert("Chức năng chưa hoạt động");
   }
 }

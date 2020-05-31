@@ -5,7 +5,9 @@ import { HttpConnectorService } from '../../service/http-connector.service/http-
 import { CONSUME_API } from '../../service/services/consume-apis';
 import { FormGroup, Validators, FormControl } from "@angular/forms";
 //import { ToastrService } from 'ngx-toastr';
-import {STATUS_RESP} from '../../constants'
+import {STATUS_RESP} from '../../constants';
+import { NgxSpinnerService } from "ngx-spinner";
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -16,6 +18,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private title: Title,
     private xhr: HttpConnectorService,
+    private spinner: NgxSpinnerService,
     //private toarst: ToastrService,
     private router: Router
   ) {
@@ -35,6 +38,7 @@ export class LoginComponent implements OnInit {
     })
   }
   login() {
+    this.spinner.show();
     let url = CONSUME_API.USERS.LOGIN;
     this.message = "";
     let param = {
@@ -56,7 +60,8 @@ export class LoginComponent implements OnInit {
         }
       }
     }, (err) => {
-
+      this.spinner.hide();
+      alert("Đã xảy ra lỗi, vui lòng thử lại")
     });
   }
 

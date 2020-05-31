@@ -20,31 +20,7 @@
         <!-- END HEADER MOBILE-->
 
         <!-- MENU SIDEBAR-->
-        <aside class="menu-sidebar d-none d-lg-block">
-            <div class="logo">
-                <a href="#">
-                    <img src="../../../../assets/images/icon/logo.png" alt="Cool Admin" />
-                </a>
-            </div>
-            <div class="menu-sidebar__content js-scrollbar1">
-                <nav class="navbar-sidebar">
-                    <ul class="list-unstyled navbar__list">
-                        <li class="active">
-                            <a [routerLink]="['/cis/customer-management']" routerLinkActive="router-link-active" >
-                                <i class="far fa-check-square"></i>Quản lí khách hàng</a>
-                        </li>
-                        <li>
-                            <a [routerLink]="['/cis/order-management/all']" routerLinkActive="router-link-active" >
-                                <i class="fas fa-chart-bar"></i>Quản lí đơn hàng</a>
-                        </li>
-                        <li>
-                            <a [routerLink]="['/cis/user-management']" routerLinkActive="router-link-active" >
-                                <i class="fas fa-table"></i>Quản lí nhân viên</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </aside>
+        <app-left-menu></app-left-menu>
         <!-- END MENU SIDEBAR-->
 
         <!-- PAGE CONTAINER-->
@@ -75,11 +51,13 @@
                                         <thead>
                                             <tr style="text-align: center;">
                                                 <th class="col-md-2" style="width: 15%;">Tên</th>
-                                                <th class="col-md-2" style="width: 15%;">Email</th>
-                                                <th class="col-md-2" style="width: 15%;">Số điện thoại</th>
-                                                <th class="col-md-3" style="width: 25%;">Ghi chú</th>
-                                                <th class="col-md-1" style="width: 15%;">Đơn hàng</th>
-                                                <th class="col-md-1" style="width: 15%;"></th>
+                                                <th class="col-md-2" style="width: 10%;">Email</th>
+                                                <th class="col-md-2" style="width: 10%;">Số điện thoại</th>
+                                                <th class="col-md-3" style="width: 20%;">Ghi chú</th>
+                                                <th class="col-md-3" style="width: 20%;">Địa chỉ</th>
+                                                <th class="col-md-3" style="width: 10%;">Tổng đơn hàng</th>
+                                                <th class="col-md-3" style="width: 5%;">Yêu cầu thiết kế</th>
+                                                <th class="col-md-1" style="width: 10%;"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -90,15 +68,21 @@
                                                 </td>
                                                 <td class="desc">{{cus.phone}}</td>
                                                 <td>{{cus.note}}</td>
+                                                <td>{{cus.customerAddress}}</td>
                                                 <td>
-                                                    <span class="role member"><a href="javascript:void(0)" (click)="viewOrder(cus.customerName, cus.id)"  style="color: white;">Đơn hàng</a></span>
+                                                    <a href="javascript:void(0)" (click)="viewOrder(cus.customerName, cus.id)"><span *ngIf="cus.order == true"  class="role member">Đã đặt {{cus.orderListQuantity}} đơn</span></a>
+                                                    <a href="javascript:void(0)" (click)="viewOrder(cus.customerName, cus.id)"><span *ngIf="cus.order == false"  class="role admin">Chưa đặt</span></a>
+                                                </td>
+                                                <td>
+                                                    <span *ngIf="cus.requiredDesign == true"  class="role member">Có</span>
+                                                    <span *ngIf="cus.requiredDesign == false"  class="role admin">Không</span>
                                                 </td>
                                                 <td>
                                                     <div class="table-data-feature">
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                        <button class="item" data-toggle="tooltip" (click) = "editCustomer()" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </button>
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" (click)="deleteCustomer(cus.id)">
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" data-toggle="modal" data-target="#deleteCustomerModal" (click)="setCustomer(cus.id)">
                                                             <i class="zmdi zmdi-delete"></i>
                                                         </button>
                                                     </div>
@@ -114,7 +98,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="copyright">
-                                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                                    <p>Copyright © 2020 PhuoChi. All rights reserved. Template by <a href="https://colorlib.com">PhuoChi</a>.</p>
                                 </div>
                             </div>
                         </div>
@@ -143,6 +127,10 @@
                             <label for="cc-name" class="control-label mb-1">Ghi chú</label>
                             <input id="cc-name"  type="text" class="form-control cc-name valid" formControlName="note">
                         </div>
+                        <div class="form-group has-success">
+                            <label for="cc-name" class="control-label mb-1">Địa chỉ</label>
+                            <input id="cc-name"  type="text" class="form-control cc-name valid" formControlName="address">
+                        </div>
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
@@ -162,6 +150,28 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal" type="submit" (click)="createOrUpdateCustomer()">Thêm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--DELETE MODAL-->
+    <div class="modal fade" id="deleteCustomerModal" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="smallmodalLabel">Xóa khách hàng</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Bạn muốn xóa khách hàng này?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" (click) ="deleteCustomer()">Xóa</button>
                 </div>
             </div>
         </div>
