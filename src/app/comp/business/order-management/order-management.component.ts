@@ -21,22 +21,24 @@ export class OrderManagementComponent implements OnInit {
     private router: Router
   ) { }
 
-  customerName: string;
-  customerId: string;
+  orderListName: string;
+  orderListId: string;
   currentUserId: string;
   isSeeProcess: boolean = false;
   isSeeAllOrder: boolean = false;
+  numberOfOrder: number = 0;
+  currentPage: number = 0;
   ngOnInit(): void {
-    this.titleService.setTitle("Quản lí đơn hàng");
+    this.titleService.setTitle("Quản lí mẫu");
     this.checkIfAdmin();
-    this.customerId = this.route.snapshot.paramMap.get("customerId");
-    if (this.customerId === "all") {
+    this.orderListId = this.route.snapshot.paramMap.get("orderListId");
+    if (this.orderListId === "all") {
       this.getAllOrder();
       this.isSeeAllOrder = true;
     } else {
       this.isSeeAllOrder = false;
-      this.customerName = sessionStorage.getItem("customerName");
-      this.getOrderByCustomerId(this.customerId);
+      this.orderListName = sessionStorage.getItem("orderListName");
+      this.getOrderByOrderListId(this.orderListId);
     }
     this.setupForm();
     this.setUpFormAssign();
@@ -56,16 +58,17 @@ export class OrderManagementComponent implements OnInit {
     })
   }
 
-  getOrderByCustomerId(customerId: any) {
+  getOrderByOrderListId(orderListId: any) {
     this.spinner.show();
-    let url = CONSUME_API.ORDER.GET_ORDER_BY_CUSTOMER_ID;
+    let url = CONSUME_API.ORDER.GET_ORDER_BY_ORDER_LIST_ID;
     let param = {
-      'customerId': customerId
+      'orderListId': orderListId
     }
     url += "?" + this.xhr.buildBodyParam(param);
     this.xhr.get(url).subscribe((res: any) => {
       if (res) {
         this.lstOrder = res.result;
+        this.numberOfOrder = this.lstOrder.length;
         this.spinner.hide();
       }
     }, (err) => {
@@ -79,6 +82,7 @@ export class OrderManagementComponent implements OnInit {
     this.xhr.get(url).subscribe((res: any) => {
       if (res) {
         this.lstOrder = res.result;
+        this.numberOfOrder = this.lstOrder.length;
         this.spinner.hide();
       }
     }, (err) => {
@@ -96,11 +100,15 @@ export class OrderManagementComponent implements OnInit {
       'orderNote': this.formCreateOrder.value.note,
       'orderQuantity': +this.formCreateOrder.value.quantity,
       'orderPrice': +this.formCreateOrder.value.price,
-      'customerId': this.customerId
+      'orderListId': this.orderListId
     }
     this.xhr.post(url, body).subscribe((res: any) => {
       if (res) {
-        this.lstOrder = res.result;
+        if (this.isSeeAllOrder) {
+          this.getAllOrder();
+        } else {
+          this.getOrderByOrderListId(this.orderListId);
+        }
         this.formCreateOrder.reset();
         this.spinner.hide();
       }
@@ -193,7 +201,7 @@ export class OrderManagementComponent implements OnInit {
         if (this.isSeeAllOrder) {
           this.getAllOrder();
         } else {
-          this.getOrderByCustomerId(this.customerId);
+          this.getOrderByOrderListId(this.orderListId);
         }
         this.spinner.hide();
       }

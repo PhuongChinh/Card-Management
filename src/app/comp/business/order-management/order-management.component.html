@@ -38,21 +38,21 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <!-- DATA TABLE -->
-                                <h2 *ngIf="!isSeeAllOrder"><b>Đơn hàng của <span style="color: rgb(1, 165, 42);">{{customerName}}</span></b></h2>
-                                <h2 *ngIf="isSeeAllOrder"><b>Tất cả đơn hàng</b></h2>
+                                <h2 *ngIf="!isSeeAllOrder"><b>Các mẫu của đơn hàng <span style="color: rgb(1, 165, 42);">{{orderListName}} - ({{numberOfOrder}} mẫu)</span></b></h2>
+                                <h2 *ngIf="isSeeAllOrder"><b>Tất cả các mẫu: ({{numberOfOrder}} mẫu)</b></h2>
                                 <div class="table-responsive table-responsive-data2">
                                     <div class="table-data__tool">
                                         <div class="table-data__tool-left">
                                         </div>
                                         <div class="table-data__tool-right" *ngIf="!isSeeAllOrder">
                                             <button class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal" data-target="#orderModal">
-                                                <i class="zmdi zmdi-plus"></i>Thêm đơn hàng</button>
+                                                <i class="zmdi zmdi-plus"></i>Thêm mẫu</button>
                                         </div>
                                     </div>
                                     <table class="table table-data2" style="width: 100%;">
                                         <thead>
                                             <tr style="text-align: center;">
-                                                <th class="col-md-2" style="width: 10%;">Đơn hàng</th>
+                                                <th class="col-md-2" style="width: 10%;">Tên mẫu</th>
                                                 <th class="col-md-2" style="width: 15%;">Ghi chú</th>
                                                 <th class="col-md-2" style="width: 5%;">Số lượng</th>
                                                 <th class="col-md-2" style="width: 10%;">Giá</th>
@@ -67,7 +67,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class="tr-shadow" style="text-align: center;" *ngFor="let order of lstOrder">
+                                            <tr class="tr-shadow" style="text-align: center;" *ngFor="let order of lstOrder | paginate: { itemsPerPage: 10, currentPage: currentPage }">
                                                 <td style="width: 10%;">{{order.orderName}}</td>
                                                 <td style="width: 15%;">{{order.note}}</td>
                                                 <td style="width: 5%;">
@@ -117,7 +117,8 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="copyright">
-                                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                                    <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
+                                    <p>Copyright © 2020 PhuoChi. All rights reserved. Template by <a href="https://colorlib.com">PhuoChi</a>.</p>
                                 </div>
                             </div>
                         </div>
@@ -131,7 +132,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="modal-title" id="mediumModalLabel" style="font-weight: bold;">Thêm đơn hàng</h2>
+                    <h2 class="modal-title" id="mediumModalLabel" style="font-weight: bold;">Thêm mẫu</h2>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -139,7 +140,7 @@
                 <div class="modal-body">
                     <form [formGroup]="formCreateOrder">
                         <div class="form-group">
-                            <label for="cc-payment" class="control-label mb-1">Tên đơn hàng</label>
+                            <label for="cc-payment" class="control-label mb-1">Tên mẫu</label>
                             <input id="cc-pament" type="text" class="form-control" formControlName = "name">
                         </div>
                         <div class="form-group has-success">

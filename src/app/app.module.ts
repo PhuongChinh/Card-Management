@@ -22,7 +22,7 @@ import { HeaderWebComponent } from './comp/business/header-web/header-web.compon
 import { MobileHeaderComponent } from './comp/business/mobile-header/mobile-header.component';
 import { LeftMenuComponent } from './comp/business/left-menu/left-menu.component';
 import { OrderListManagementComponent } from './comp/business/order-list-management/order-list-management.component';
-
+import {NgxPaginationModule} from 'ngx-pagination'
 @NgModule({
   declarations: [
     AppComponent,
@@ -50,7 +50,8 @@ import { OrderListManagementComponent } from './comp/business/order-list-managem
     MatToolbarModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    NgxPaginationModule
   ],
   
   providers: [

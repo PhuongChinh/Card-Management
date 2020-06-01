@@ -25,6 +25,7 @@ export class CustomerManagementComponent implements OnInit {
     this.title.setTitle("Quản lí khách hàng");
    }
 
+  currentPage: number = 0;
   ngOnInit(): void {
     this.checkIfAdmin();
     this.getAllCustomer();
@@ -45,7 +46,7 @@ export class CustomerManagementComponent implements OnInit {
   }
   getAllCustomer(){
     this.spinner.show();
-    let url = CONSUME_API.CUSTOMER.CUSTOMERS;
+    let url = CONSUME_API.CUSTOMER.GET_ALL_CUSTOMER;
     this.xhr.get(url).subscribe((res: any) => {
       if (res) {
         this.lstCustomer = res._embedded.customers;
