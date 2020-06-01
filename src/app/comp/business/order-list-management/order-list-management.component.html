@@ -69,10 +69,10 @@
                                                 <td>
                                                     <a href="javascript:void(0)" (click)="viewOrder(orderList.orderListName, orderList.id)">
                                                     <span class="role admin" *ngIf="orderList.completedPercent !== 100">
-                                                        {{orderList.completedQuantity}}/{{orderList.totalQuantity}} - ({{orderList.completedPercent}} %)
+                                                        {{orderList.completedQuantity}}/{{orderList.totalQuantity}} - ({{orderList.completedPercent.toFixed(2)}} %)
                                                     </span>
                                                     <span class="role member" *ngIf="orderList.completedPercent == 100">
-                                                        {{orderList.completedQuantity}}/{{orderList.totalQuantity}} - ({{orderList.completedPercent}} %)
+                                                        {{orderList.completedQuantity}}/{{orderList.totalQuantity}} - ({{orderList.completedPercent.toFixed(2)}} %)
                                                     </span>
                                                     </a>
                                                 </td>

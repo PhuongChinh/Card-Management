@@ -237,4 +237,8 @@ export class OrderManagementComponent implements OnInit {
     }
   }
 
+  viewProcess(name: string, id: string) {
+    sessionStorage.setItem("orderName", name);
+    this.router.navigate(['/cis/order-phase-process-management', id]);
+  }
 }

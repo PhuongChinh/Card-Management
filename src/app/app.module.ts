@@ -22,7 +22,8 @@ import { HeaderWebComponent } from './comp/business/header-web/header-web.compon
 import { MobileHeaderComponent } from './comp/business/mobile-header/mobile-header.component';
 import { LeftMenuComponent } from './comp/business/left-menu/left-menu.component';
 import { OrderListManagementComponent } from './comp/business/order-list-management/order-list-management.component';
-import {NgxPaginationModule} from 'ngx-pagination'
+import {NgxPaginationModule} from 'ngx-pagination';
+import { OrderPhaseProcessComponent } from './comp/business/order-phase-process/order-phase-process.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,6 +36,7 @@ import {NgxPaginationModule} from 'ngx-pagination'
     MobileHeaderComponent,
     LeftMenuComponent,
     OrderListManagementComponent,
+    OrderPhaseProcessComponent,
   ],
   imports: [
     BrowserModule,
