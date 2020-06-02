@@ -8,8 +8,12 @@ import { Component, OnInit } from '@angular/core';
 export class MobileHeaderComponent implements OnInit {
 
   constructor() { }
-
+  isNavbarCollapsed = false;
   ngOnInit(): void {
+    this.checkUser();
   }
-
+  userId: string;
+  checkUser(){
+    this.userId = sessionStorage.getItem("userId");
+  }
 }

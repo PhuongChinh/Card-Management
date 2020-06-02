@@ -10,6 +10,10 @@ export class LeftMenuComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.checkUser();
   }
-
+  userId: string;
+  checkUser(){
+    this.userId = sessionStorage.getItem("userId");
+  }
 }

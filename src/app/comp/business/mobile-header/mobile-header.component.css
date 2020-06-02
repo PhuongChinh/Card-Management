@@ -1,0 +1,11 @@
+.image-margin{
+    margin-right: 15px;
+}
+.text {
+    font-size: 18px;
+    color: white;
+    margin-top: 5px;
+}
+.li {
+    border-bottom: 1px solid white;
+}

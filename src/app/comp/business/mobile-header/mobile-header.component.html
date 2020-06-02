@@ -1,4 +1,4 @@
-<header class="header-mobile d-block d-lg-none">
+<!-- <header class="header-mobile d-block d-lg-none">
     <div class="header-mobile__bar">
       <div class="container-fluid">
         <div class="header-mobile-inner">
@@ -20,6 +20,11 @@
               <a [routerLink]="['/cis/order-management/all']" routerLinkActive="router-link-active" ><span><i class="fas fa-map-marker-alt"></i></span></a>
             </span>
           </button>
+           <button class="hamburger hamburger--slider" type="button">
+            <span class="hamburger-box">
+              <a [routerLink]="['/cis/order-management/all']" routerLinkActive="router-link-active" ><span><i class="fas fa-table"></i></span></a>
+            </span>
+          </button>
           <button class="hamburger hamburger--slider" type="button">
             <span class="hamburger-box">
                 <a [routerLink]="['/cis/user-management']" routerLinkActive="router-link-active" ><span><i class="fas fa-table"></i></span></a>
@@ -29,3 +34,48 @@
       </div>
     </div>
   </header>
+   -->
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top"
+  style="background-color: white;">
+  <a class="logo" href="#">
+    <img src="../../../../assets/images/icon/logo-white.png" alt="CoolAdmin" />
+  </a>
+  <button type="button" data-toggle="collapse" data-target="#demo"
+    (click)="isNavbarCollapsed=!isNavbarCollapsed" style="margin-left: 15px;">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div *ngIf="isNavbarCollapsed" id="demo" class="collapse">
+    <li>
+      <a [routerLink]="['/cis/customer-management']"
+        routerLinkActive="router-link-active" class="text">
+        <i class="far fa-check-square image-margin"></i>Quản lí khách hàng</a>
+    </li>
+    <li>
+      <a [routerLink]="['/cis/order-list-management/all']"
+        routerLinkActive="router-link-active" class="text">
+        <i class="fas fa-chart-bar image-margin"></i>Quản lí đơn hàng</a>
+    </li>
+    <li>
+      <a [routerLink]="['/cis/order-management/all']"
+        routerLinkActive="router-link-active" class="text">
+        <i class="fas fa-map-marker-alt image-margin"></i>Quản lí theo mẫu</a>
+    </li>
+    <li>
+      <a [routerLink]="['/cis/order-management/all']"
+        routerLinkActive="router-link-active" class="text">
+        <i class="fas fa-calendar-alt image-margin"></i>Quản lí yêu cầu thiết kế</a>
+    </li>
+    <li>
+      <a [routerLink]="['/cis/user-management']"
+        routerLinkActive="router-link-active" class="text">
+        <i class="fas fa-table image-margin"></i>Quản lí nhân viên</a>
+    </li>
+
+    <li>
+      <a [routerLink]="['/cis/each-user-working-management', userId]"
+        routerLinkActive="router-link-active" class="text">
+        <i class="fas fa-desktop image-margin"></i>Công việc của tôi</a>
+    </li>
+
+  </div>
+</nav>
