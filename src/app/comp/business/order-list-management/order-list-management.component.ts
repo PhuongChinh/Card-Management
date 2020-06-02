@@ -27,6 +27,7 @@ export class OrderListManagementComponent implements OnInit {
   lstOrderList: any = [];
   currentPage: number = 0;
   ngOnInit(): void {
+    this.checkIfAdmin();
     this.title.setTitle("Quản lí đơn hàng");
     this.setupForm();
     this.customerId = this.route.snapshot.paramMap.get("customerId");
@@ -110,7 +111,11 @@ export class OrderListManagementComponent implements OnInit {
     this.editOrderListId = id;
   }
   deleteOrderList(){
-    let url = CONSUME_API.ORDER_LIST.ORDER_LISTS + "/" + this.editOrderListId;
+    let url = CONSUME_API.ORDER_LIST.DELETE_ORDER_LIST;
+    let param = {
+      'orderListId': this.editOrderListId
+    }
+    url += "?" + this.xhr.buildBodyParam(param);
     this.xhr.delete(url).subscribe((res: any) => {
       if (this.isSeeAllOrderList) {
         this.getAllOrderList();
@@ -126,4 +131,12 @@ export class OrderListManagementComponent implements OnInit {
     sessionStorage.setItem("orderListName",name);
     this.router.navigate(['/cis/order-management', id]);
    }
+
+   isManager: boolean = false;
+  checkIfAdmin() {
+    let role = sessionStorage.getItem("role");
+    if (role === "ADMIN") {
+      this.isManager = true;
+    }
+  }
 }

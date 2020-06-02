@@ -60,7 +60,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class="tr-shadow" style="text-align: center;" *ngFor="let user of lstUser">
+                                            <tr class="tr-shadow" style="text-align: center;" *ngFor="let user of lstUser  | paginate: { itemsPerPage: 10, currentPage: currentPage }">
                                                 <td>{{user.userName}}</td>
                                                 <td>{{user.fullName}}</td>
                                                 <td>{{user.password}}</td>
@@ -95,7 +95,8 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="copyright">
-                                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                                    <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
+                                    <p>Copyright © 2020 PhuoChi. All rights reserved. Template by <a href="https://colorlib.com">PhuoChi</a>.</p>
                                 </div>
                             </div>
                         </div>

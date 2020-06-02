@@ -92,4 +92,5 @@ export class UserManagementComponent implements OnInit {
       this.router.navigate(['/cis/login']);
     }
   }
+  currentPage: number = 0;
 }

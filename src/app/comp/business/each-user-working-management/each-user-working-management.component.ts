@@ -19,7 +19,11 @@ export class EachUserWorkingManagementComponent implements OnInit {
     private xhr: HttpConnectorService
   ) { }
   workerId: string;
+  currentPage: number = 0;
   ngOnInit(): void {
+    this.setUpFormNoteWorker();
+    this.setUpFormNoteManager();
+    this.checkIfAdmin();
     this.titleService.setTitle("Quản lí công việc");
     this.workerId = this.route.snapshot.paramMap.get("workerId");
     this.getWorkerPhaseByWorkerId();
@@ -70,4 +74,94 @@ export class EachUserWorkingManagementComponent implements OnInit {
     this.orderId = orderId;
   }
 
+
+
+  managerNote: string;
+  workerNote: string;
+  editPhaseWorker: string;
+  setWorkerNote(note: string, id: string){
+    this.workerNote = note;
+    this.editPhaseWorker = id;
+  }
+
+  setManagerNote(note: string, id: string){
+    this.managerNote = note;
+    this.editPhaseWorker = id;
+  }
+
+
+
+  formNoteManager: FormGroup;
+  formNoteWorker: FormGroup;
+
+  setUpFormNoteWorker() {
+    this.formNoteWorker = new FormGroup({
+      note: new FormControl('', [])
+    })
+  }
+
+  setUpFormNoteManager() {
+    this.formNoteManager = new FormGroup({
+      note: new FormControl('', [])
+    })
+  }
+  saveWorkerNote(){
+    this.spinner.show();
+    let url = CONSUME_API.ORDER.ADD_WORKER_NOTE;
+    let param = {
+      'orderPhaseWorkerId': this.editPhaseWorker,
+      'note': this.formNoteWorker.value.note
+    }
+    url += "?" + this.xhr.buildBodyParam(param);
+    this.xhr.get(url).subscribe((res: any) => {
+      if (res) {
+        this.getWorkerPhaseByWorkerId();
+        this.spinner.hide();
+      }
+    }, (err) => {
+      alert("Xảy ra lỗi, vui lòng F5 lại trang!")
+    });
+  }
+
+  saveManagerNote(){
+    this.spinner.show();
+    let url = CONSUME_API.ORDER.ADD_MANAGER_NOTE;
+    let param = {
+      'orderPhaseWorkerId': this.editPhaseWorker,
+      'note': this.formNoteManager.value.note
+    }
+    url += "?" + this.xhr.buildBodyParam(param);
+    this.xhr.get(url).subscribe((res: any) => {
+      if (res) {
+        this.getWorkerPhaseByWorkerId();
+        this.spinner.hide();
+      }
+    }, (err) => {
+      alert("Xảy ra lỗi, vui lòng F5 lại trang!")
+    });
+  }
+
+  isManager: boolean = false;
+  checkIfAdmin() {
+    let role = sessionStorage.getItem("role");
+    if (role === "ADMIN") {
+      this.isManager = true;
+    }
+  }
+  confirmCancelJob() {
+    this.spinner.show();
+    let url = CONSUME_API.ORDER.CANCEL_PHASE;
+    let param = {
+      'phaseWorkerId': this.phaseWorkerId
+    }
+    url += "?" + this.xhr.buildBodyParam(param);
+    this.xhr.get(url).subscribe((res: any) => {
+      if (res) {
+        this.getWorkerPhaseByWorkerId();
+        this.spinner.hide();
+      }
+    }, (err) => {
+      alert("Xảy ra lỗi, vui lòng F5 lại trang!")
+    });
+  }
 }

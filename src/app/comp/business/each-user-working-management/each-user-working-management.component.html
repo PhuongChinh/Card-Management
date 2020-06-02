@@ -42,16 +42,18 @@
                                     <table class="table table-data2" style="width: 100%;">
                                         <thead>
                                             <tr style="text-align: center;">
-                                                <th class="col-md-2" style="width: 25%;">Đơn hàng</th>
-                                                <th class="col-md-2" style="width: 25%;">Giai đoạn</th>
+                                                <th class="col-md-2" style="width: 25%;">Mẫu</th>
+                                                <th class="col-md-2" style="width: 15%;">Giai đoạn</th>
                                                 <th class="col-md-2" style="width: 15%;">Số lượng</th>
-                                                <th class="col-md-2" style="width: 25%;">Trạng thái</th>
+                                                <th class="col-md-2" style="width: 15%;">Trạng thái</th>
+                                                <th class="col-md-2" style="width: 20%;">Hoàn thành</th>
+                                                <th class="col-md-2" style="width: 20%;"></th>
                                                 <th class="col-md-1" style="width: 15%;"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class="tr-shadow" style="text-align: center;" *ngFor="let working of lstWorkerPhase">
-                                                <td>{{working.order.orderName}}</td>
+                                            <tr class="tr-shadow" style="text-align: center;" *ngFor="let working of lstWorkerPhase | paginate: { itemsPerPage: 10, currentPage: currentPage }">
+                                                <td><a [routerLink]="['/cis/order-phase-process-management', working.order.id]" routerLinkActive="router-link-active" >{{working.order.orderName}}</a></td>
                                                 <td *ngIf="working.phase == 'Phase_two'" style="color: rgb(6, 119, 134);">Cắt</td>
                                                 <td *ngIf="working.phase == 'Phase_three'" style="color: rgb(158, 118, 9)">Chi tiết</td>
                                                 <td *ngIf="working.phase == 'Phase_four'" style="color: rgb(80, 117, 5)">Chà hàng</td>
@@ -59,9 +61,25 @@
                                                 <td>{{working.quantity}}</td>
                                                 <td *ngIf="working.status == 'Đang làm'"><span style="color:red ;">Đang làm</span></td>
                                                 <td *ngIf="working.status == 'Đã xong'"><span style="color:#63c76a ;">Đã xong</span></td>
-                                                <td>
+                                                <td *ngIf="working.completedTime != undefined">{{working.completedTime | date: "dd-MM-yyyy HH:mm:ss"}}</td>
+                                                <td *ngIf="working.completedTime == undefined">00:00:00 00:00:00</td>
+
+                                                <td style="padding: 5px;">
+                                                    <button type="button" class="btn btn-primary btn-sm"  data-toggle="modal" data-target="#noteModalWorker1" (click)="setWorkerNote(working.workerNote,working.id)">
+                                                        <i class="fa fa-star"></i>&nbsp; Nhân viên</button>
+                                                </td>
+                                                <td style="padding: 5px;" >
+                                                    <button type="button"  data-toggle="modal" data-target="#noteModalManager1" (click)="setManagerNote(working.qaNote,working.id)" class="btn btn-secondary btn-sm">
+                                                        <i class="fa fa-lightbulb-o"></i>&nbsp; Quản lí</button>
+                                                </td>
+
+                                                <td style="padding: 5px;">
                                                     <button *ngIf="working.status == 'Đang làm'" class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal" data-target="#confirmCompleteModal" (click)="setInfo(working.id,working.order.id)">√</button>
                                                 </td>
+                                                <td style="padding: 5px;">
+                                                    <button *ngIf="working.status == 'Đang làm'" class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal" data-target="#confirmCancelModal1" (click)="setInfo(working.id,working.order.id)" style="background-color: red;margin-left: 5px;margin-right: 5px;">x</button>
+                                                </td>
+                                                
                                             </tr>
                                             <tr class="spacer"></tr> 
                                         </tbody>
@@ -74,7 +92,8 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="copyright">
-                                    <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
+                                    <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
+                                    <p>Copyright © 2020 PhuoChi. All rights reserved. Template by <a href="https://colorlib.com">PhuoChi</a>.</p>
                                 </div>
                             </div>
                         </div>
@@ -100,6 +119,79 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal" type="submit" (click)="confirmCompletedJob()">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="noteModalWorker1" tabindex="-1" role="dialog" aria-labelledby="smallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="mediumModalLabel" style="font-weight: bold;">Ghi chú của nhân viên</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]="formNoteWorker">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <textarea name="textarea-input" id="textarea-input" rows="9" placeholder="Ghi chú..." class="form-control" formControlName="note" [(ngModel)]="workerNote"></textarea>
+                        </div>
+                    </div>
+                </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" type="submit" (click)="saveWorkerNote()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="noteModalManager1" tabindex="-1" role="dialog" aria-labelledby="smallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="mediumModalLabel" style="font-weight: bold;">Ghi chú của quản lí</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form [formGroup]="formNoteManager">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <textarea name="textarea-input" id="textarea-input" rows="9" placeholder="Ghi chú..." class="form-control" formControlName="note" [(ngModel)]="managerNote"></textarea>
+                        </div>
+                    </div>
+                </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button *ngIf="isManager" type="button" class="btn btn-primary" data-dismiss="modal" type="submit" (click)="saveManagerNote()">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="modal fade" id="confirmCancelModal1" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="mediumModalLabel" style="font-weight: bold;">Xác nhận xóa công việc </h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Bạn muốn xác nhận sẽ xóa công việc này?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" type="submit" (click)="confirmCancelJob()">Xác nhận</button>
                 </div>
             </div>
         </div>

@@ -29,8 +29,8 @@ export class OrderManagementComponent implements OnInit {
   numberOfOrder: number = 0;
   currentPage: number = 0;
   ngOnInit(): void {
-    this.titleService.setTitle("Quản lí mẫu");
     this.checkIfAdmin();
+    this.titleService.setTitle("Quản lí mẫu");
     this.orderListId = this.route.snapshot.paramMap.get("orderListId");
     if (this.orderListId === "all") {
       this.getAllOrder();
@@ -41,8 +41,6 @@ export class OrderManagementComponent implements OnInit {
       this.getOrderByOrderListId(this.orderListId);
     }
     this.setupForm();
-    this.setUpFormAssign();
-    this.getAllUser();
     this.currentUserId = sessionStorage.getItem("userId");
   }
 
@@ -54,7 +52,8 @@ export class OrderManagementComponent implements OnInit {
       desc: new FormControl('', []),
       note: new FormControl('', []),
       quantity: new FormControl('', []),
-      price: new FormControl('', [])
+      price: new FormControl('', []),
+      imageLink: new FormControl('',[])
     })
   }
 
@@ -100,7 +99,8 @@ export class OrderManagementComponent implements OnInit {
       'orderNote': this.formCreateOrder.value.note,
       'orderQuantity': +this.formCreateOrder.value.quantity,
       'orderPrice': +this.formCreateOrder.value.price,
-      'orderListId': this.orderListId
+      'orderListId': this.orderListId,
+      'imageLink': this.formCreateOrder.value.imageLink
     }
     this.xhr.post(url, body).subscribe((res: any) => {
       if (res) {
@@ -117,128 +117,38 @@ export class OrderManagementComponent implements OnInit {
     });
   }
 
-  lstUser: any = [];
-  lstMaxNumber: any = [];
-  workerId: string = "";
-  getAllUser() {
-    this.spinner.show();
-    let url = CONSUME_API.USERS.USERS;
-    this.xhr.get(url).subscribe((res: any) => {
-      if (res) {
-        this.lstUser = res._embedded.users;
-        this.spinner.hide();
-      }
-    }, (err) => {
-
-    });
-  }
-
-  selectOptionUser(evt: any) {
-    this.workerId = evt;
-  }
-
-  formAssign: FormGroup;
-  setUpFormAssign() {
-    this.formAssign = new FormGroup({
-      quantity: new FormControl('', [])
-    })
-  }
-
-  phase: string;
-  maxCard: number;
-  setPhase(phase: string, notDo: number) {
-    this.phase = phase;
-    this.maxCard = notDo;
-  }
-  assignJob() {
-    if (this.formAssign.value.quantity > this.maxCard) {
-      alert("Số lượng thiệp được giao lớn hơn số lượng còn lại của bước này!!!")
-    } else {
-      this.spinner.show();
-      let url = CONSUME_API.ORDER.ASSIGN_JOB;
-      let body = {
-        'orderId': this.orderDetailId,
-        'quantity': this.formAssign.value.quantity,
-        'createdId': this.currentUserId,
-        'workerId': this.workerId,
-        'phase': this.phase
-
-      }
-      this.xhr.post(url, body).subscribe((res: any) => {
-        if (res) {
-          this.formAssign.reset();
-          this.getPhaseWorkerOfOrder(this.orderDetailId);
-          this.spinner.hide();
-        }
-      }, (err) => {
-
-      });
-    }
-  }
-
-  orderDetailId: string;
-  orderDetail: any;
-  seeProgess(order: any) {
-    this.isSeeProcess = true;
-    this.orderDetailId = order.id;
-    this.orderDetail = order;
-    this.getPhaseWorkerOfOrder(this.orderDetailId);
-  }
-
-
-  progessDetail: any;
-  getPhaseWorkerOfOrder(orderId: string) {
-    this.spinner.show();
-    let url = CONSUME_API.ORDER.PHASE_WORKER_OF_ORDER;
-    let param = {
-      'orderId': orderId
-    }
-    url += "?" + this.xhr.buildBodyParam(param);
-    this.xhr.get(url).subscribe((res: any) => {
-      if (res) {
-        console.log(res);
-        this.progessDetail = res.result;
-        if (this.isSeeAllOrder) {
-          this.getAllOrder();
-        } else {
-          this.getOrderByOrderListId(this.orderListId);
-        }
-        this.spinner.hide();
-      }
-    }, (err) => {
-      alert("Xảy ra lỗi, vui lòng F5 lại trang!")
-    });
-  }
-
-  // Xác nhận làm xong việc
-  confirmCompletedJob(phaseWorkerId: string) {
-    this.spinner.show();
-    let url = CONSUME_API.ORDER.CONFIRM_COMPLETED_JOB;
-    let param = {
-      'orderId': this.orderDetailId,
-      'phaseWorkerId': phaseWorkerId
-    }
-    url += "?" + this.xhr.buildBodyParam(param);
-    this.xhr.get(url).subscribe((res: any) => {
-      if (res) {
-        console.log(res);
-        this.getPhaseWorkerOfOrder(this.orderDetailId);
-        this.spinner.hide();
-      }
-    }, (err) => {
-      alert("Xảy ra lỗi, vui lòng F5 lại trang!")
-    });
-  }
-  checkIfAdmin() {
-    let role = sessionStorage.getItem("role");
-    if (role === "WORKER" || role === null) {
-      sessionStorage.clear();
-      this.router.navigate(['/cis/login']);
-    }
-  }
-
   viewProcess(name: string, id: string) {
     sessionStorage.setItem("orderName", name);
     this.router.navigate(['/cis/order-phase-process-management', id]);
+  }
+
+
+  editOrderId: string;
+  setOrder(id: string){
+    this.editOrderId = id;
+  }
+  deleteOrder(){
+    let url = CONSUME_API.ORDER.DELETE_ORDER;
+    let param = {
+      'orderId': this.editOrderId,
+      'orderListId': this.orderListId
+    }
+    url += "?" + this.xhr.buildBodyParam(param);
+    this.xhr.delete(url).subscribe((res: any) => {
+      if (this.isSeeAllOrder) {
+        this.getAllOrder();
+      } else {
+        this.getOrderByOrderListId(this.orderListId);
+      }
+      }, (err) => {
+
+    });
+  }
+  isManager: boolean = false;
+  checkIfAdmin() {
+    let role = sessionStorage.getItem("role");
+    if (role === "ADMIN") {
+      this.isManager = true;
+    }
   }
 }

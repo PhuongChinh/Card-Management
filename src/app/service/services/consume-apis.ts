@@ -18,13 +18,18 @@ export class CONSUME_API {
         ASSIGN_JOB: '/v1/orderCtrl/assignJobForWorker',
         PHASE_WORKER_OF_ORDER: '/v1/orderCtrl/getPhaseWorkerOfOrder',
         CONFIRM_COMPLETED_JOB: '/v1/orderCtrl/confirmWorkerCompletedPhase',
-        GET_EACH_USER_WORKING: '/v1/orderCtrl/getPhaseWorkerByWorkerId'
+        GET_EACH_USER_WORKING: '/v1/orderCtrl/getPhaseWorkerByWorkerId',
+        ADD_WORKER_NOTE: '/v1/orderCtrl/addWorkerNote',
+        ADD_MANAGER_NOTE: '/v1/orderCtrl/addManagerNote',
+        DELETE_ORDER: '/v1/orderCtrl/deleteOrder',
+        CANCEL_PHASE: '/v1/orderCtrl/confirmCancelPhase'
     }
 
     static ORDER_LIST: any = {
         ORDER_LISTS: '/v1/orderLists',
         GET_ORDER_LIST_BY_CUSTOMER_ID: '/v1/orderLists/search/findByCustomerId',
         GET_ALL_ORDER_LIST: '/v1/orderLists/search/findAllOrderList',
-        CREATE_ORDER_LITS: '/v1/orderCtrl/createOrderList'
+        CREATE_ORDER_LITS: '/v1/orderCtrl/createOrderList',
+        DELETE_ORDER_LIST: '/v1/orderCtrl/deleteOrderList'
     }
 }

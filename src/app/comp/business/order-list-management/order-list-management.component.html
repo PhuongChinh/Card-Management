@@ -69,14 +69,14 @@
                                                 <td>
                                                     <a href="javascript:void(0)" (click)="viewOrder(orderList.orderListName, orderList.id)">
                                                     <span class="role admin" *ngIf="orderList.completedPercent !== 100">
-                                                        {{orderList.completedQuantity}}/{{orderList.totalQuantity}} - ({{orderList.completedPercent.toFixed(2)}} %)
+                                                        {{orderList.completedQuantity}}/{{orderList.totalQuantity}} - ({{orderList.completedPercent.toFixed(0)}} %)
                                                     </span>
                                                     <span class="role member" *ngIf="orderList.completedPercent == 100">
-                                                        {{orderList.completedQuantity}}/{{orderList.totalQuantity}} - ({{orderList.completedPercent.toFixed(2)}} %)
+                                                        {{orderList.completedQuantity}}/{{orderList.totalQuantity}} - ({{orderList.completedPercent.toFixed(0)}} %)
                                                     </span>
                                                     </a>
                                                 </td>
-                                                <td>
+                                                <td *ngIf="isManager">
                                                     <div class="table-data-feature">
                                                         <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>

@@ -94,14 +94,14 @@
                                                 </td>
 
                                                 <td style="width: 9%;">
-                                                    <span class="status--process"><a [routerLink]="['/']" routerLinkActive="router-link-active"data-toggle="modal" data-target="#assignWorker" (click)="seeProgess(order)">Detail</a></span>
+                                                    <span class="status--process"><a [routerLink]="['/']" routerLinkActive="router-link-active" (click)="viewProcess(order.orderName, order.id)">Detail</a></span>
                                                 </td>
-                                                <td style="width: 9%;">
+                                                <td style="width: 9%;" *ngIf="isManager">
                                                     <div class="table-data-feature">
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" (click)="viewProcess(order.orderName, order.id)" title="Edit">
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </button>
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" data-toggle="modal" data-target="#deleteOrderModal" (click)="setOrder(order.id)">
                                                             <i class="zmdi zmdi-delete"></i>
                                                         </button>
                                                     </div>
@@ -151,6 +151,10 @@
                             <label for="cc-name" class="control-label mb-1">Ghi chú</label>
                             <input id="cc-name"  type="text" class="form-control cc-name valid" formControlName = "note">
                         </div>
+                        <div class="form-group has-success">
+                            <label for="cc-name" class="control-label mb-1">Link ảnh minh họa</label>
+                            <input id="cc-name"  type="text" class="form-control cc-name valid" formControlName = "imageLink">
+                        </div>
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
@@ -174,148 +178,30 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="assignWorker" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true" *ngIf="isSeeProcess">
-        <div class="modal-dialog modal-lg" role="document">
+
+    <div class="modal fade" id="deleteOrderModal" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="modal-title" id="mediumModalLabel" style="font-weight: bold;">Tiến độ</h2>
+                    <h2 class="modal-title" id="smallmodalLabel">Xóa mẫu</h2>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="table-responsive">
-                        <table class="table table-top-campaign">
-                            <tbody>
-                                <tr>
-                                    <td style="color: coral;">Tổng</td>
-                                    <td style="color: coral;">{{orderDetail.quantity}} thiệp</td>
-                                </tr>
-                                <tr>
-                                    <td style="color: red;">Chưa làm</td>
-                                    <td style="color: red;">{{progessDetail.notDo}} thiệp</td>
-                                </tr>
-                                <tr>
-                                    <td style="color: green;">Hoàn thành</td>
-                                    <td style="color: green;">{{progessDetail.completed}} thiệp</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <br>
-                    <div class="table-responsive" style="border: 1px solid #d3d3d3; border-radius: 10px;">
-                        <h3 class="title-3 m-b-30" style="border-bottom: 1px solid #d3d3d3;text-align: center;"><b>Cắt - <span style="color: red;">Chưa phân công: {{progessDetail.twoNotDo}} thiệp</span></b>-----<a href="" data-toggle="modal" data-target="#assignModal" (click)="setPhase('Phase_two',progessDetail.notDo)" >Thêm người làm</a></h3>
-                        <table class="table table-top-campaign">
-                            <tbody>
-                                <tr *ngFor="let workerPhase of progessDetail.phaseTwo">
-                                    <td>{{workerPhase.worker.fullName}}</td>
-                                    <td>{{workerPhase.quantity}} thiệp</td>
-                                    <td *ngIf="workerPhase.status == 'Đang làm'"><span style="color:red ;">{{workerPhase.status}}</span></td>
-                                    <td *ngIf="workerPhase.status == 'Đã xong'"><span style="color: #63c76a;">{{workerPhase.status}}</span></td>
-                                    <td>
-                                        <button *ngIf="workerPhase.status == 'Đang làm'" class="au-btn au-btn-icon au-btn--green au-btn--small" (click)="confirmCompletedJob(workerPhase.id)">√</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                   <br><br>
-                    <div class="table-responsive" style="border: 1px solid #d3d3d3; border-radius: 10px;">
-                        <h3 class="title-3 m-b-30" style="border-bottom: 1px solid #d3d3d3;text-align: center;"><b>Chi tiết - <span style="color: red;">Chưa phân công: {{progessDetail.threeNotDo}} thiệp</span></b>-----<a href="" data-toggle="modal" data-target="#assignModal" (click)="setPhase('Phase_three', progessDetail.threeNotDo)">Thêm người làm</a></h3>
-                        <table class="table table-top-campaign">
-                            <tbody>
-                                <tr *ngFor="let workerPhase of progessDetail.phaseThree">
-                                    <td>{{workerPhase.worker.fullName}}</td>
-                                    <td>{{workerPhase.quantity}} thiệp</td>
-                                    <td *ngIf="workerPhase.status == 'Đang làm'">{{workerPhase.status}}</td>
-                                    <td *ngIf="workerPhase.status == 'Đã xong'"><span style="color: green;">{{workerPhase.status}}</span></td>
-                                    <td>
-                                        <button *ngIf="workerPhase.status == 'Đang làm'" class="au-btn au-btn-icon au-btn--green au-btn--small" (click)="confirmCompletedJob(workerPhase.id)">√</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <br><br>
-                    <div class="table-responsive" style="border: 1px solid #d3d3d3; border-radius: 10px;">
-                        <h3 class="title-3 m-b-30" style="border-bottom: 1px solid #d3d3d3;text-align: center;"><b>Chà hàng - <span style="color: red;">Chưa phân công: {{progessDetail.fourNotDo}} thiệp</span></b>-----<a href="" data-toggle="modal" data-target="#assignModal" (click)="setPhase('Phase_four',progessDetail.fourNotDo)">Thêm người làm</a></h3>
-                        <table class="table table-top-campaign">
-                            <tbody>
-                                <tr *ngFor="let workerPhase of progessDetail.phaseFour">
-                                    <td>{{workerPhase.worker.fullName}}</td>
-                                    <td>{{workerPhase.quantity}} thiệp</td>
-                                    <td *ngIf="workerPhase.status == 'Đang làm'">{{workerPhase.status}}</td>
-                                    <td *ngIf="workerPhase.status == 'Đã xong'"><span style="color: green;">{{workerPhase.status}}</span></td>
-                                    <td>
-                                        <button *ngIf="workerPhase.status == 'Đang làm'" class="au-btn au-btn-icon au-btn--green au-btn--small" (click)="confirmCompletedJob(workerPhase.id)">√</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <br><br>
-                    <div class="table-responsive" style="border: 1px solid #d3d3d3; border-radius: 10px;">
-                        <h3 class="title-3 m-b-30" style="border-bottom: 1px solid #d3d3d3;text-align: center;"><b>Kiểm xuất - <span style="color: red;">Chưa phân công: {{progessDetail.fiveNotDo}} thiệp</span></b>-----<a href="" data-toggle="modal" data-target="#assignModal" (click)="setPhase('Phase_five',progessDetail.fiveNotDo)">Thêm người làm</a></h3>
-                        <table class="table table-top-campaign">
-                            <tbody>
-                                <tr *ngFor="let workerPhase of progessDetail.phaseFive">
-                                    <td>{{workerPhase.worker.fullName}}</td>
-                                    <td>{{workerPhase.quantity}} thiệp</td>
-                                    <td *ngIf="workerPhase.status == 'Đang làm'">{{workerPhase.status}}</td>
-                                    <td *ngIf="workerPhase.status == 'Đã xong'"><span style="color: green;">{{workerPhase.status}}</span></td>
-                                    <td>
-                                        <button *ngIf="workerPhase.status == 'Đang làm'" class="au-btn au-btn-icon au-btn--green au-btn--small" (click)="confirmCompletedJob(workerPhase.id)">√</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>  
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-    <!--ADD PHASE WORKER-->
-    <div class="modal fade" id="assignModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title" id="mediumModalLabel" style="font-weight: bold;">Giao việc</h2>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form [formGroup]="formAssign">
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label for="cc-exp" class="control-label mb-1">Nhân viên</label>
-                                <select name="select" id="select" class="form-control" (change)="selectOptionUser($event.target.value)">
-                                    <option value="0">Chọn nhân viên</option>
-                                    <option value= {{user.id}} *ngFor="let user of lstUser">{{user.fullName}}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <label for="cc-exp" class="control-label mb-1">Số lượng</label>
-                            <input id="x_card_code" min = "min" max = "max" type="number" class="form-control cc-cvc" formControlName="quantity">
-                        </div>
-                    </div>
-                </form>
+                    <p>
+                        Bạn muốn xóa mẫu này?
+                    </p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" type="submit" (click)="assignJob()">Thêm</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" (click) ="deleteOrder()">Xóa</button>
                 </div>
             </div>
         </div>
     </div>
+
+
 </body>
 
 </html>

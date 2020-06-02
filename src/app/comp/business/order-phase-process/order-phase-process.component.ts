@@ -31,6 +31,9 @@ export class OrderPhaseProcessComponent implements OnInit {
     this.currentUserId = sessionStorage.getItem("userId");
     this.setUpFormAssign();
     this.getAllUser();
+    this.setUpFormNoteManager();
+    this.setUpFormNoteWorker();
+    this.checkIfAdmin();
   }
 
   lstUser: any = [];
@@ -54,9 +57,23 @@ export class OrderPhaseProcessComponent implements OnInit {
   }
 
   formAssign: FormGroup;
+  formNoteManager: FormGroup;
+  formNoteWorker: FormGroup;
   setUpFormAssign() {
     this.formAssign = new FormGroup({
       quantity: new FormControl('', [])
+    })
+  }
+
+  setUpFormNoteWorker() {
+    this.formNoteWorker = new FormGroup({
+      note: new FormControl('', [])
+    })
+  }
+
+  setUpFormNoteManager() {
+    this.formNoteManager = new FormGroup({
+      note: new FormControl('', [])
     })
   }
 
@@ -114,17 +131,16 @@ export class OrderPhaseProcessComponent implements OnInit {
   }
 
   // Xác nhận làm xong việc
-  confirmCompletedJob(phaseWorkerId: string) {
+  confirmCompletedJob() {
     this.spinner.show();
     let url = CONSUME_API.ORDER.CONFIRM_COMPLETED_JOB;
     let param = {
       'orderId': this.orderId,
-      'phaseWorkerId': phaseWorkerId
+      'phaseWorkerId': this.phaseWorkerId
     }
     url += "?" + this.xhr.buildBodyParam(param);
     this.xhr.get(url).subscribe((res: any) => {
       if (res) {
-        console.log(res);
         this.getPhaseWorkerOfOrder(this.orderId);
         this.spinner.hide();
       }
@@ -133,4 +149,83 @@ export class OrderPhaseProcessComponent implements OnInit {
     });
   }
 
+  confirmCancelJob() {
+    this.spinner.show();
+    let url = CONSUME_API.ORDER.CANCEL_PHASE;
+    let param = {
+      'phaseWorkerId': this.phaseWorkerId
+    }
+    url += "?" + this.xhr.buildBodyParam(param);
+    this.xhr.get(url).subscribe((res: any) => {
+      if (res) {
+        this.getPhaseWorkerOfOrder(this.orderId);
+        this.spinner.hide();
+      }
+    }, (err) => {
+      alert("Xảy ra lỗi, vui lòng F5 lại trang!")
+    });
+  }
+
+  managerNote: string;
+  workerNote: string;
+  editPhaseWorker: string;
+  setWorkerNote(note: string, id: string){
+    this.workerNote = note;
+    this.editPhaseWorker = id;
+  }
+
+  setManagerNote(note: string, id: string){
+    this.managerNote = note;
+    this.editPhaseWorker = id;
+  }
+
+  saveWorkerNote(){
+    this.spinner.show();
+    let url = CONSUME_API.ORDER.ADD_WORKER_NOTE;
+    let param = {
+      'orderPhaseWorkerId': this.editPhaseWorker,
+      'note': this.formNoteWorker.value.note
+    }
+    url += "?" + this.xhr.buildBodyParam(param);
+    this.xhr.get(url).subscribe((res: any) => {
+      if (res) {
+        this.getPhaseWorkerOfOrder(this.orderId);
+        this.spinner.hide();
+      }
+    }, (err) => {
+      alert("Xảy ra lỗi, vui lòng F5 lại trang!")
+    });
+  }
+
+  saveManagerNote(){
+    this.spinner.show();
+    let url = CONSUME_API.ORDER.ADD_MANAGER_NOTE;
+    let param = {
+      'orderPhaseWorkerId': this.editPhaseWorker,
+      'note': this.formNoteManager.value.note
+    }
+    url += "?" + this.xhr.buildBodyParam(param);
+    this.xhr.get(url).subscribe((res: any) => {
+      if (res) {
+        this.getPhaseWorkerOfOrder(this.orderId);
+        this.spinner.hide();
+      }
+    }, (err) => {
+      alert("Xảy ra lỗi, vui lòng F5 lại trang!")
+    });
+  }
+
+
+  phaseWorkerId: string;
+  setInfo(phaseWorkerId: string){
+    this.phaseWorkerId = phaseWorkerId;
+  }
+
+  isManager: boolean = false;
+  checkIfAdmin() {
+    let role = sessionStorage.getItem("role");
+    if (role === "ADMIN") {
+      this.isManager = true;
+    }
+  }
 }
