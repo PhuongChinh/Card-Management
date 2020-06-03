@@ -24,6 +24,9 @@ import { LeftMenuComponent } from './comp/business/left-menu/left-menu.component
 import { OrderListManagementComponent } from './comp/business/order-list-management/order-list-management.component';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { OrderPhaseProcessComponent } from './comp/business/order-phase-process/order-phase-process.component';
+import { DesignRequiredManagementComponent } from './comp/business/design-required-management/design-required-management.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,6 +40,7 @@ import { OrderPhaseProcessComponent } from './comp/business/order-phase-process/
     LeftMenuComponent,
     OrderListManagementComponent,
     OrderPhaseProcessComponent,
+    DesignRequiredManagementComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,7 +57,8 @@ import { OrderPhaseProcessComponent } from './comp/business/order-phase-process/
     FormsModule,
     ReactiveFormsModule,
     NgxSpinnerModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    MatAutocompleteModule
   ],
   
   providers: [

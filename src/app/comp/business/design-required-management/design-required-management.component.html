@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="au theme template">
+    <meta name="author" content="Hau Nguyen">
+    <meta name="keywords" content="au theme template">
+
+    <!-- Title Page-->
+    <title>Tables</title>
+
+</head>
+
+<body class="animsition">
+    <div class="page-wrapper">
+        <app-mobile-header></app-mobile-header>
+        <!-- END HEADER MOBILE-->
+
+        <!-- MENU SIDEBAR-->
+        <app-left-menu></app-left-menu>
+        <!-- END MENU SIDEBAR-->
+
+        <!-- PAGE CONTAINER-->
+        <div class="page-container">
+            <!-- HEADER DESKTOP-->
+            <app-header-web></app-header-web>
+            <!-- END HEADER DESKTOP-->
+
+            <!-- MAIN CONTENT-->
+            <div class="main-content">
+                <div><ngx-spinner></ngx-spinner></div>
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <!-- DATA TABLE -->
+                                <h2><b>Danh sách các yêu cầu thiết kế</b></h2>
+                                <div class="table-responsive table-responsive-data2">
+                                    <div class="table-data__tool">
+                                        <div class="table-data__tool-left">
+                                        </div>
+                                        <div class="table-data__tool-right">
+                                            <button class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal" data-target="#addRequired">
+                                                <i class="zmdi zmdi-plus"></i>Thêm yêu cầu thiết kế</button>
+                                        </div>
+                                    </div>
+                                    <table class="table table-data2" style="width: 100%;">
+                                        <thead>
+                                            <tr style="text-align: center;">
+                                                <th class="col-md-2" style="width: 15%;">Yêu cầu</th>
+                                                <th class="col-md-2" style="width: 15%;">Mô tả</th>
+                                                <th class="col-md-2" style="width: 15%;">Ghi chú</th>
+                                                <th class="col-md-3" style="width: 10%;">Mẫu</th>
+                                                <th class="col-md-3" style="width: 10%;">Khách hàng</th>
+                                                <th class="col-md-3" style="width: 10%;">Hoàn thành</th>
+                                                <th class="col-md-3" style="width: 15%;">Người hoàn thành</th>
+                                                <th class="col-md-3" style="width: 5%;"></th>
+                                                <th class="col-md-1" style="width: 5%;"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="tr-shadow" style="text-align: center;" *ngFor="let required of lstRequired  | paginate: { itemsPerPage: 10, currentPage: currentPage }">
+                                                <td>{{required.requiredName}}</td>
+                                                <td>{{required.requiredDesc}}</td>
+                                                <td>{{required.note}}</td>
+                                                <td>{{required.order.orderName}}</td>
+                                                <td>{{required.order.orderList.customer.customerName}}</td>
+                                                <td *ngIf="required.completed == false" style="color: red;">Chưa</td>
+                                                <td *ngIf="required.completed == false" style="color: red;">Chưa</td>
+                                                <td *ngIf="required.completed == true">{{required.completedTime | date: "dd-MM-yyyy"}}</td>
+                                                <td *ngIf="required.completed == true">{{required.completedBy.fullName}}</td>
+                                                <td><a href="javascript:void(0)" data-toggle="modal" data-target="#imageModal" (click)="setInfo(required)">Ảnh</a></td>
+                                                <td *ngIf="required.completed == false">
+                                                    <button class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal" data-target="#completedRequiredModal" (click)="setInfo(required)">√</button>
+                                                </td>
+                                                <td *ngIf="required.completed == true" style="color: #63c76a;">
+                                                    Hoàn thành
+                                                </td>
+                                                <td>
+                                                    <div class="table-data-feature">
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa">
+                                                            <i class="zmdi zmdi-edit"></i>
+                                                        </button>
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Xóa">
+                                                            <i class="zmdi zmdi-delete"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- END DATA TABLE -->
+                            </div>
+                            
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <div class="copyright">
+                                    <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
+                                    <p>Copyright © 2020 PhuoChi. All rights reserved. Template by <a href="https://colorlib.com">PhuoChi</a>.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal fade" id="addRequired" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="mediumModalLabel" style="font-weight: bold;">Thêm yêu cầu thiết kế</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form  [formGroup]="formRequired">
+                        <div class="form-group">
+                            <label for="cc-payment" class="control-label mb-1">Tiêu đề</label>
+                            <input id="cc-pament" type="text" class="form-control" formControlName="name" >
+                        </div>
+                        <div class="form-group has-success">
+                            <label for="cc-name" class="control-label mb-1">Mô tả</label>
+                            <input id="cc-name"  type="text" class="form-control cc-name valid" formControlName="desc">
+                        </div>
+                        <div class="form-group has-success">
+                            <label for="cc-name" class="control-label mb-1">Ghi chú</label>
+                            <input id="cc-name"  type="text" class="form-control cc-name valid" formControlName="note">
+                        </div>
+                        <div class="form-group has-success">
+                            <label for="cc-name" class="control-label mb-1">Link ảnh minh họa</label>
+                            <input id="cc-name"  type="text" class="form-control cc-name valid" formControlName="imageLink">
+                        </div>
+                        <div class="form-group has-success">
+                            <label for="cc-name" class="control-label mb-1">Mẫu</label>
+                            <select name="select" id="select" class="form-control" (change)="selectOption($event.target.value)">
+                                <option value = {{item.id}} *ngFor="let item of lstOrder">{{item.orderName}}</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" type="submit" (click)="createRequired()">Thêm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--DELETE MODAL-->
+    <div class="modal fade" id="completedRequiredModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="smallmodalLabel">Xác nhận hoàn thành yêu cầu thiết kế</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Bạn muốn xác nhận đã xong yêu cầu thiết kế này?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="confirmCompleteRequired()">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--IMAGE MODAL-->
+    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="smallmodalLabel">Ảnh minh họa</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <img src= {{imageLink}}>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+
+</html>
+<!-- end document-->

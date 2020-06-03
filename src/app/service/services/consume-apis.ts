@@ -22,7 +22,8 @@ export class CONSUME_API {
         ADD_WORKER_NOTE: '/v1/orderCtrl/addWorkerNote',
         ADD_MANAGER_NOTE: '/v1/orderCtrl/addManagerNote',
         DELETE_ORDER: '/v1/orderCtrl/deleteOrder',
-        CANCEL_PHASE: '/v1/orderCtrl/confirmCancelPhase'
+        CANCEL_PHASE: '/v1/orderCtrl/confirmCancelPhase',
+        START_PROGESS: '/v1/orderCtrl/startProgess'
     }
 
     static ORDER_LIST: any = {
@@ -31,5 +32,11 @@ export class CONSUME_API {
         GET_ALL_ORDER_LIST: '/v1/orderLists/search/findAllOrderList',
         CREATE_ORDER_LITS: '/v1/orderCtrl/createOrderList',
         DELETE_ORDER_LIST: '/v1/orderCtrl/deleteOrderList'
+    }
+
+    static REQUIRED: any = {
+        CREATE_REQUIRED: '/v1/requiredCtrl/createRequired',
+        GET_ALL_REQUIRED: '/v1/requiredCtrl/findAllRequired',
+        CONFIRM_COMPLETE_REQUIRED: '/v1/requiredCtrl/completeRequired'
     }
 }

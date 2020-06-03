@@ -151,4 +151,26 @@ export class OrderManagementComponent implements OnInit {
       this.isManager = true;
     }
   }
+
+  imageLink: string;
+  setInfo(order: any) {
+    this.imageLink = order.imageLink;
+  }
+
+  startManufactory(id: string){
+    let url = CONSUME_API.ORDER.START_PROGESS;
+    let param = {
+      'orderId': id
+    }
+    url += "?" + this.xhr.buildBodyParam(param);
+    this.xhr.get(url).subscribe((res: any) => {
+      if (this.isSeeAllOrder) {
+        this.getAllOrder();
+      } else {
+        this.getOrderByOrderListId(this.orderListId);
+      }
+      }, (err) => {
+
+    });
+  }
 }

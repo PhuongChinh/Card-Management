@@ -7,6 +7,7 @@ import {UserManagementComponent} from './comp/business/user-management/user-mana
 import {EachUserWorkingManagementComponent} from './comp/business/each-user-working-management/each-user-working-management.component'
 import {OrderListManagementComponent} from './comp/business/order-list-management/order-list-management.component'
 import {OrderPhaseProcessComponent} from './comp/business/order-phase-process/order-phase-process.component'
+import {DesignRequiredManagementComponent} from './comp/business/design-required-management/design-required-management.component'
 const routes: Routes = [
   { path: 'cis/login', component: LoginComponent },
   { path: 'cis/customer-management', component: CustomerManagementComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'cis/each-user-working-management/:workerId', component: EachUserWorkingManagementComponent },
   { path: 'cis/order-list-management/:customerId', component: OrderListManagementComponent },
   { path: 'cis/order-phase-process-management/:orderId', component: OrderPhaseProcessComponent },
+  { path: 'cis/design-required-management', component: DesignRequiredManagementComponent },
   { path: '', redirectTo: 'cis/login', pathMatch: 'full' },
 ];
 
