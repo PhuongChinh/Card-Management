@@ -75,10 +75,10 @@
                                                 </td>
                                                 <td>
                                                     <div class="table-data-feature">
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" (click) = "setUser(user)" data-toggle="modal" data-target="#createUserModal" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </button>
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" (click) = "setUser(user)" data-toggle="modal" data-target="#deleteUserModal">
                                                             <i class="zmdi zmdi-delete"></i>
                                                         </button>
                                                     </div>
@@ -111,7 +111,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="modal-title" id="mediumModalLabel" style="font-weight: bold;">Thêm khách hàng</h2>
+                    <h2 class="modal-title" id="mediumModalLabel" style="font-weight: bold;" (click)="setCreateNew()">Thêm khách hàng</h2>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -147,16 +147,39 @@
                                 <label for="cc-exp" class="control-label mb-1">Chức vụ</label>
                                 <select name="select" id="select" class="form-control" (change)="selectOption($event.target.value)">
                                     <option value="0">Chọn chức vụ</option>
-                                    <option value="ADMIN">Quản lí</option>
-                                    <option value="WORKER">Nhân viên</option>
+                                    <option value="ADMIN"  [selected] = "newUserRole == 'ADMIN'">Quản lí</option>
+                                    <option value="WORKER"  [selected] = "newUserRole == 'WORKER'">Nhân viên</option>
                                 </select>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="setCreateNew()">Hủy</button>
+                    <button *ngIf="!isEdited" type="button" class="btn btn-primary" data-dismiss="modal" type="submit" (click)="createNewUser()">Thêm</button>
+                    <button *ngIf="isEdited" type="button" class="btn btn-primary" data-dismiss="modal" type="submit" (click)="updateUser()">Chỉnh sửa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="smallmodalLabel">Xóa nhân viên</h2>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Bạn muốn xóa nhân viên này?
+                    </p>
+                </div>
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" type="submit" (click)="createNewUser()">Thêm</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" (click) ="deleteUser()">Xóa</button>
                 </div>
             </div>
         </div>

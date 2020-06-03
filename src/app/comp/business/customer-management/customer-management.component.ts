@@ -104,7 +104,46 @@ export class CustomerManagementComponent implements OnInit {
       this.router.navigate(['/cis/login']);
     }
   }
-  editCustomer(){
-    alert("Chức năng chưa hoạt động");
+
+
+
+  editedCustomerId: string;
+  isEdited: boolean = false;
+  setCreateNew() {
+    this.isEdited = false;
+    this.formCustomer.reset();
   }
+  editCustomer(){
+    this.spinner.show();
+    let url = CONSUME_API.CUSTOMER.CUSTOMERS + '/' + this.editCustomerId;
+    let body = {
+      'customerName': this.formCustomer.value.name,
+      'note': this.formCustomer.value.note,
+      'phone': this.formCustomer.value.phone,
+      'email': this.formCustomer.value.email,
+      'customerAddress': this.formCustomer.value.address,
+    }
+    this.xhr.patch(url, body).subscribe((res: any) => {
+      if (res) {
+        this.getAllCustomer();
+        this.spinner.hide();
+      }
+    }, (err) => {
+
+    });
+  }
+
+  setEditedCustomer(customer: any){
+    this.editCustomerId = customer.id;
+    this.formCustomer.setValue({
+      name: customer.customerName,
+      note: customer.note,
+      email: customer.email,
+      phone: customer.phone,
+      address: customer.customerAddress
+    })
+  }
+
+
+
 }

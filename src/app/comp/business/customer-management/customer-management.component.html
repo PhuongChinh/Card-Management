@@ -43,7 +43,7 @@
                                         <div class="table-data__tool-left">
                                         </div>
                                         <div class="table-data__tool-right">
-                                            <button class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal" data-target="#mediumModal">
+                                            <button class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal" data-target="#createCustomerModal" (click)="setCreateNew()">
                                                 <i class="zmdi zmdi-plus"></i>Thêm khách hàng</button>
                                         </div>
                                     </div>
@@ -79,7 +79,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="table-data-feature">
-                                                        <button class="item" data-toggle="tooltip" (click) = "editCustomer()" data-placement="top" title="Edit">
+                                                        <button class="item" data-toggle="tooltip" (click) = "setEditedCustomer(cus)" data-toggle="modal" data-target="#createCustomerModal" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </button>
                                                         <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" data-toggle="modal" data-target="#deleteCustomerModal" (click)="setCustomer(cus.id)">
@@ -110,7 +110,7 @@
         </div>
 
     </div>
-    <div class="modal fade" id="mediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+    <div class="modal fade" id="createCustomerModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -150,8 +150,9 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" type="submit" (click)="createOrUpdateCustomer()">Thêm</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="setCreateNew()">Hủy</button>
+                    <button *ngIf="!isEdited" type="button" class="btn btn-primary" data-dismiss="modal" type="submit" (click)="createOrUpdateCustomer()">Thêm</button>
+                    <button *ngIf="isEdited" type="button" class="btn btn-primary" data-dismiss="modal" type="submit" (click)="editCustomer()">Chỉnh sửa</button>
                 </div>
             </div>
         </div>

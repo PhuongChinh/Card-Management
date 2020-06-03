@@ -42,8 +42,7 @@ export class UserManagementComponent implements OnInit {
       name: new FormControl('', []),
       userName: new FormControl('', []),
       password: new FormControl('', []),
-      phone: new FormControl('', []),
-      role: new FormControl('', [])
+      phone: new FormControl('', [])
     })
   }
   createNewUser(){
@@ -93,4 +92,57 @@ export class UserManagementComponent implements OnInit {
     }
   }
   currentPage: number = 0;
+
+  isEdited: boolean = false;
+  editedUserId: string;
+  setUser(user: any) { 
+    this.editedUserId = user.id;
+    this.formCreateNewUser.setValue({
+      name: user.fullName, 
+      userName: user.userName,
+      password: user.password,
+      phone: user.phone
+    });
+    this.newUserRole = user.role;
+    this.isEdited = true;
+  }
+
+  updateUser(){
+    this.spinner.show();
+    let url = CONSUME_API.USERS.USERS + "/" + this.editedUserId;
+    let body = {
+      'userName': this.formCreateNewUser.value.userName,
+      'fullName': this.formCreateNewUser.value.name,
+      'password': this.formCreateNewUser.value.password,
+      'phone': this.formCreateNewUser.value.phone,
+      'role': this.newUserRole
+    }
+    this.xhr.patch(url,body).subscribe((res: any) => {
+      if (res) {
+        this.getAllUser();
+        this.isEdited = false;
+        this.formCreateNewUser.reset();
+        this.spinner.hide();
+      }
+    }, (err) => {
+
+    });
+  }
+  deleteUser() {
+    this.spinner.show();
+    let url = CONSUME_API.USERS.USERS + "/" + this.editedUserId;
+    this.xhr.delete(url).subscribe((res: any) => {
+      if (res) {
+        this.getAllUser();
+        this.spinner.hide();
+      }
+      this.getAllUser();
+    }, (err) => {
+
+    });
+  }
+  setCreateNew(){
+    this.isEdited = false;
+    this.formCreateNewUser.reset();
+  }
 }
