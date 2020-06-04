@@ -139,4 +139,43 @@ export class OrderListManagementComponent implements OnInit {
       this.isManager = true;
     }
   }
+
+  //EDIT/UPDATE ORDER LIST
+  isEdited: boolean = false;
+  setCreateNew(){
+    this.isEdited = false;
+    this.formCreateOrderList.reset();
+  }
+  setEdited(orderList: any){
+    this.isEdited = true;
+    this.editOrderListId = orderList.id;
+    this.formCreateOrderList.setValue({
+      name: orderList.orderListName,
+      desc: orderList.orderListDesc,
+      note: orderList.note
+    })
+  }
+
+  updateOrderList() {
+    this.spinner.show();
+    let url = CONSUME_API.ORDER_LIST.ORDER_LISTS + "/" + this.editOrderListId;
+    let body = {
+      'orderListName': this.formCreateOrderList.value.name,
+      'orderListDesc': this.formCreateOrderList.value.desc,
+      'note': this.formCreateOrderList.value.note,
+    }
+    this.xhr.patch(url, body).subscribe((res: any) => {
+      if (res) {
+        if (this.isSeeAllOrderList) {
+          this.getAllOrderList();
+        } else {
+          this.getOrderListByCustomerId(this.customerId);
+        }
+        this.setCreateNew();
+        this.spinner.hide();
+      }
+    }, (err) => {
+
+    });
+  }
 }

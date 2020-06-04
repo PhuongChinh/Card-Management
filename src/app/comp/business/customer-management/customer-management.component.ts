@@ -134,6 +134,7 @@ export class CustomerManagementComponent implements OnInit {
   }
 
   setEditedCustomer(customer: any){
+    this.isEdited  = true;
     this.editCustomerId = customer.id;
     this.formCustomer.setValue({
       name: customer.customerName,

@@ -45,7 +45,7 @@
                                         <div class="table-data__tool-left">
                                         </div>
                                         <div class="table-data__tool-right" *ngIf="!isSeeAllOrderList">
-                                            <button class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal" data-target="#createOrderlistModal">
+                                            <button class="au-btn au-btn-icon au-btn--green au-btn--small" data-toggle="modal" data-target="#createOrderlistModal" (click)="setCreateNew()">
                                                 <i class="zmdi zmdi-plus"></i>Thêm đơn hàng</button>
                                         </div>
                                     </div>
@@ -80,7 +80,7 @@
                                                 </td>
                                                 <td *ngIf="isManager">
                                                     <div class="table-data-feature">
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                        <button class="item" data-toggle="tooltip" data-toggle="modal" data-target="#createOrderlistModal" (click) = "setEdited(orderList)" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </button>
                                                         <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" data-toggle="modal" data-target="#deleteCustomerModal" (click)="setOrderList(orderList.id)">
@@ -138,8 +138,9 @@
                 </div>
                     
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" type="submit" (click)="createOrderList()">Thêm</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="setCreateNew()">Hủy</button>
+                    <button *ngIf="!isEdited" type="button" class="btn btn-primary" data-dismiss="modal" type="submit" (click)="createOrderList()">Thêm</button>
+                    <button *ngIf="isEdited" type="button" class="btn btn-primary" data-dismiss="modal" type="submit" (click)="updateOrderList()">Chỉnh sửa</button>
                 </div>
             </div>
         </div>

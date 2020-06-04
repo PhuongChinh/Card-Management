@@ -173,4 +173,49 @@ export class OrderManagementComponent implements OnInit {
 
     });
   }
+
+  //UPDATE ORDER
+  isEdited: boolean = false;
+  setCreateNew() {
+    this.isEdited = false;
+    this.formCreateOrder.reset();
+  }
+
+  setEdited(order: any){
+    this.isEdited = true;
+    this.editOrderId = order.id
+    this.formCreateOrder.setValue({
+      name: order.orderName,
+      desc: order.orderDesc,
+      note: order.note,
+      quantity: order.quantity,
+      price: order.price,
+      imageLink: order.imageLink
+    })
+  }
+
+  updateOrder(){
+    this.spinner.show();
+    let url = CONSUME_API.ORDER.ORDERS + "/" + this.editOrderId;
+    let body = {
+      'orderName': this.formCreateOrder.value.name,
+      'orderDesc': this.formCreateOrder.value.desc,
+      'note': this.formCreateOrder.value.note,
+      'price': +this.formCreateOrder.value.price,
+      'imageLink': this.formCreateOrder.value.imageLink
+    }
+    this.xhr.patch(url, body).subscribe((res: any) => {
+      if (res) {
+        if (this.isSeeAllOrder) {
+          this.getAllOrder();
+        } else {
+          this.getOrderByOrderListId(this.orderListId);
+        }
+        this.setCreateNew();
+        this.spinner.hide();
+      }
+    }, (err) => {
+
+    });
+  }
 }

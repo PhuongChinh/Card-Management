@@ -38,7 +38,6 @@ export class DesignRequiredManagementComponent implements OnInit {
       desc: new FormControl('', []),
       note: new FormControl('', []),
       imageLink: new FormControl('', []),
-      address: new FormControl('', [])
     })
   }
 
@@ -121,4 +120,49 @@ export class DesignRequiredManagementComponent implements OnInit {
     });
   }
 
+
+  isEdited: boolean = false;
+  setCreateNew() {
+    this.isEdited = false;
+    this.formRequired.reset();
+  }
+  setEdited(required: any){
+    this.editRequiredId = required.id;
+    this.isEdited = true;
+    this.formRequired.setValue({
+      name: required.requiredName,
+      desc: required.requiredDesc,
+      note: required.note,
+      imageLink: required.imageLink,
+    }) 
+  }
+  updateRequired(){
+    
+    let url = CONSUME_API.REQUIRED.REQUIREDS + "/" + this.editRequiredId;
+    let body = {
+      'requiredName': this.formRequired.value.name,
+      'requiredDesc': this.formRequired.value.desc,
+      'note': this.formRequired.value.note,
+      'imageLink': this.formRequired.value.imageLink,
+    }
+    this.xhr.patch(url,body).subscribe((res: any) => {
+      if (res) {
+        this.getAllRequired();
+        this.setCreateNew();
+        this.spinner.hide();
+      }
+    }, (err) => {
+
+    });
+  }
+
+  deleteRequired(){
+    let url = CONSUME_API.REQUIRED.REQUIREDS + "/" + this.editRequiredId;
+    this.xhr.delete(url).subscribe((res: any) => {
+        this.getAllRequired();
+        this.spinner.hide();
+    }, (err) => {
+
+    });
+  }
 }

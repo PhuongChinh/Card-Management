@@ -12,6 +12,7 @@ export class CONSUME_API {
     }
 
     static ORDER: any = {
+        ORDERS: '/v1/orders',
         CREATE_ORDER: '/v1/orderCtrl/createOrder',
         GET_ORDER_BY_ORDER_LIST_ID: '/v1/orderCtrl/getOrderByOrderListId',
         GET_ALL_ORDER: '/v1/orderCtrl/getAllOrder',
@@ -35,6 +36,7 @@ export class CONSUME_API {
     }
 
     static REQUIRED: any = {
+        REQUIREDS: '/v1/designRequireds',
         CREATE_REQUIRED: '/v1/requiredCtrl/createRequired',
         GET_ALL_REQUIRED: '/v1/requiredCtrl/findAllRequired',
         CONFIRM_COMPLETE_REQUIRED: '/v1/requiredCtrl/completeRequired'
