@@ -50,34 +50,29 @@
                                     <table class="table table-data2" style="width: 100%;">
                                         <thead>
                                             <tr style="text-align: center;">
-                                                <th class="col-md-2" style="width: 20%;">Tên</th>
+                                                <th class="col-md-2" style="width: 25%;">Tên</th>
                                                 <th class="col-md-2" style="width: 10%;">Email</th>
                                                 <th class="col-md-2" style="width: 15%;">Số điện thoại</th>
                                                 <th class="col-md-3" style="width: 20%;">Ghi chú</th>
                                                 <th class="col-md-3" style="width: 20%;">Địa chỉ</th>
                                                 <th class="col-md-3" style="width: 5%;">Đã đặt hàng</th>
-                                                <th class="col-md-3" style="width: 5%;">Yêu cầu thiết kế</th>
                                                 <th class="col-md-1" style="width: 5%;"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr class="tr-shadow" style="text-align: center;" *ngFor="let cus of lstCustomer | paginate: { itemsPerPage: 10, currentPage: currentPage }">
-                                                <td>{{cus.customerName}}</td>
-                                                <td>
+                                                <td style="width: 25%;">{{cus.customerName}}</td>
+                                                <td style="width: 10%;">
                                                     <span class="block-email">{{cus.email}}</span>
                                                 </td>
-                                                <td class="desc">{{cus.phone}}</td>
-                                                <td>{{cus.note}}</td>
-                                                <td>{{cus.customerAddress}}</td>
-                                                <td  style="padding: 0px;">
+                                                <td class="desc" style="width: 10%;">{{cus.phone}}</td>
+                                                <td style="width: 20%;">{{cus.note}}</td>
+                                                <td style="width: 20%;">{{cus.customerAddress}}</td>
+                                                <td  style="padding: 0px;width: 5%;">
                                                     <a href="javascript:void(0)" (click)="viewOrder(cus.customerName, cus.id)"><span *ngIf="cus.order == true"  class="role member">{{cus.orderListQuantity}} đơn</span></a>
                                                     <a href="javascript:void(0)" (click)="viewOrder(cus.customerName, cus.id)"><span *ngIf="cus.order == false"  class="role admin">Không</span></a>
                                                 </td>
-                                                <td>
-                                                    <span *ngIf="cus.requiredDesign == true"  class="role member">Có</span>
-                                                    <span *ngIf="cus.requiredDesign == false"  class="role admin">Không</span>
-                                                </td>
-                                                <td>
+                                                <td style="width: 5%;">
                                                     <div class="table-data-feature">
                                                         <button class="item" data-toggle="tooltip" (click) = "setEditedCustomer(cus)" data-toggle="modal" data-target="#createCustomerModal" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
