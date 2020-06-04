@@ -39,6 +39,8 @@ export class CONSUME_API {
         REQUIREDS: '/v1/designRequireds',
         CREATE_REQUIRED: '/v1/requiredCtrl/createRequired',
         GET_ALL_REQUIRED: '/v1/requiredCtrl/findAllRequired',
-        CONFIRM_COMPLETE_REQUIRED: '/v1/requiredCtrl/completeRequired'
+        CONFIRM_COMPLETE_REQUIRED: '/v1/requiredCtrl/completeRequired',
+        GET_ALL_REQUIRED_BY_CUSTOMER_ID: '/v1/requiredCtrl/findRequiredByCustomerId',
+        DELETE_REQUIRED: '/v1/requiredCtrl/deleteRequired'
     }
 }

@@ -52,10 +52,11 @@
                                             <tr style="text-align: center;">
                                                 <th class="col-md-2" style="width: 25%;">Tên</th>
                                                 <th class="col-md-2" style="width: 10%;">Email</th>
-                                                <th class="col-md-2" style="width: 15%;">Số điện thoại</th>
+                                                <th class="col-md-2" style="width: 10%;">Số điện thoại</th>
                                                 <th class="col-md-3" style="width: 20%;">Ghi chú</th>
                                                 <th class="col-md-3" style="width: 20%;">Địa chỉ</th>
                                                 <th class="col-md-3" style="width: 5%;">Đã đặt hàng</th>
+                                                <th class="col-md-1" style="width: 5%;"></th>
                                                 <th class="col-md-1" style="width: 5%;"></th>
                                             </tr>
                                         </thead>
@@ -71,6 +72,10 @@
                                                 <td  style="padding: 0px;width: 5%;">
                                                     <a href="javascript:void(0)" (click)="viewOrder(cus.customerName, cus.id)"><span *ngIf="cus.order == true"  class="role member">{{cus.orderListQuantity}} đơn</span></a>
                                                     <a href="javascript:void(0)" (click)="viewOrder(cus.customerName, cus.id)"><span *ngIf="cus.order == false"  class="role admin">Không</span></a>
+                                                </td>
+                                                <td style="width: 5%;">
+                                                    <span *ngIf="cus.requiredDesign == true"  class="role member"> <a style="color: white;" [routerLink]="['/cis/design-required-management',cus.id]" routerLinkActive="router-link-active" >Có</a></span>
+                                                    <span *ngIf="cus.requiredDesign == false"  class="role admin"><a style="color: white;" [routerLink]="['/cis/design-required-management',cus.id]" routerLinkActive="router-link-active" >Không</a></span>
                                                 </td>
                                                 <td style="width: 5%;">
                                                     <div class="table-data-feature">

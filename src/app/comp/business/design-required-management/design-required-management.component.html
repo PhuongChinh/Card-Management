@@ -66,8 +66,9 @@
                                                 <td>{{required.requiredName}}</td>
                                                 <td>{{required.requiredDesc}}</td>
                                                 <td>{{required.note}}</td>
-                                                <td>{{required.order.orderName}}</td>
-                                                <td>{{required.order.orderList.customer.customerName}}</td>
+                                                <td *ngIf="required.order == undefined">N/A</td>
+                                                <td *ngIf= "required.order != undefined">{{required.order.orderName}}</td>
+                                                <td>{{required.customer.customerName}}</td>
                                                 <td *ngIf="required.completed == false" style="color: red;">Chưa</td>
                                                 <td *ngIf="required.completed == false" style="color: red;">Chưa</td>
                                                 <td *ngIf="required.completed == true">{{required.completedTime | date: "dd-MM-yyyy"}}</td>
@@ -139,9 +140,10 @@
                             <label for="cc-name" class="control-label mb-1">Link ảnh minh họa</label>
                             <input id="cc-name"  type="text" class="form-control cc-name valid" formControlName="imageLink">
                         </div>
-                        <div class="form-group has-success" *ngIf="!isEdited">
+                        <div class="form-group has-success" *ngIf="!isEdited && isSeeAllRequired">
                             <label for="cc-name" class="control-label mb-1">Mẫu</label>
                             <select name="select" id="select" class="form-control" (change)="selectOption($event.target.value)">
+                                <option>Chọn mẫu</option>
                                 <option value = {{item.id}} *ngFor="let item of lstOrder">{{item.orderName}}</option>
                             </select>
                         </div>

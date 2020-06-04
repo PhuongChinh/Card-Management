@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'cis/each-user-working-management/:workerId', component: EachUserWorkingManagementComponent },
   { path: 'cis/order-list-management/:customerId', component: OrderListManagementComponent },
   { path: 'cis/order-phase-process-management/:orderId', component: OrderPhaseProcessComponent },
-  { path: 'cis/design-required-management', component: DesignRequiredManagementComponent },
+  { path: 'cis/design-required-management/:customerId', component: DesignRequiredManagementComponent },
   { path: '', redirectTo: 'cis/login', pathMatch: 'full' },
 ];
 
